@@ -1,0 +1,85 @@
+# Architecture Decision Records (ADR) Template
+# Formato YAML para mejor eficiencia de tokens y procesamiento por el CA
+
+# Instrucciones:
+# - Añade nuevas ADRs al final con número secuencial
+# - No borres ADRs antiguas, márcalas como deprecated
+# - Sé conciso: máximo 200-300 palabras por ADR
+# - Estados: accepted | deprecated | superseded_by
+
+adrs:
+  - id: "001"
+    titulo: "[Títol de la Decisió]"
+    data: "YYYY-MM-DD"
+    estado: accepted  # accepted | deprecated | superseded_by
+    area: "[frontend|backend|infrastructure|process]"
+
+    context: |
+      Describe el contexto y el problema que motivó esta decisión.
+      - ¿Qué situación nos encontramos?
+      - ¿Qué necesitábamos conseguir?
+      - ¿Qué limitaciones teníamos?
+
+    decision: |
+      ¿Qué decidimos hacer? Sé claro y conciso.
+
+    alternatives:
+      - nombre: "[Nom Alternativa A]"
+        pros:
+          - "[Pro 1]"
+          - "[Pro 2]"
+        contras:
+          - "[Contra 1]"
+          - "[Contra 2]"
+        per_que_descartada: "[MOTIU]"
+
+      - nombre: "[Nom Alternativa B]"
+        pros:
+          - "[Pro 1]"
+        contras:
+          - "[Contra 1]"
+        per_que_descartada: "[MOTIU]"
+
+    consequencies:
+      positives:
+        - "[Benefici 1]"
+        - "[Benefici 2]"
+      negatives:
+        - "[Costo/limitación 1]"
+        - "[Costo/limitación 2]"
+      impacto: "[Qué componentes/servicios se ven afectados]"
+
+    notes: "[Información adicional, referencias, links]"  # Opcional
+
+  - id: "002"
+    titulo: "[Siguiente Decisión]"
+    data: "YYYY-MM-DD"
+    estado: accepted
+    area: "[area]"
+
+    context: |
+      [CONTEXT]
+
+    decision: |
+      [DECISIÓ]
+
+    alternatives:
+      - nombre: "[Alternativa]"
+        pros: []
+        contras: []
+        per_que_descartada: "[MOTIU]"
+
+    consequencies:
+      positives: []
+      negatives: []
+      impacto: "[IMPACTE]"
+
+# Índice rápido para encontrar ADRs
+# Actualiza esta lista manualmente
+index:
+  - id: "001"
+    titulo: "[Títol]"
+    estado: accepted
+  - id: "002"
+    titulo: "[Títol]"
+    estado: accepted

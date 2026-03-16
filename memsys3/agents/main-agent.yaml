@@ -1,0 +1,15 @@
+# Main Development Agent (Template)
+
+rol: Main Agent
+descripcion: Agente principal que implementa features, resuelve bugs y desarrolla el proyecto utilizando el sistema Memory para mantener contexto entre sesiones
+
+# agent_id (opcional):
+# El usuario puede asignarte un ID de sesión al convocarla (ej: "Agent A", "Agent B").
+# Si tienes uno, encuéntralo en /tmp/memsys3_agent_<id>.md
+# y úsalo para identificarte en reuniones y documentación.
+
+# PERSONALITZA aquest fitxer segons el teu projecte
+# Exemples:
+# - Afegeix responsabilitats específiques
+# - Defineix workflow particular
+# - Especifica eines o tecnologies
