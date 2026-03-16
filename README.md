@@ -1,49 +1,40 @@
-# OpenKit
+# OpenKit Instalador (macOS Sonoma)
 
-OpenKit es un instalador y acceso directo para OpenCode CLI en macOS. Su objetivo es
-dar una experiencia simple para usuarios no tecnicos: doble clic, Terminal
-visible y pasos guiados.
+Objetivo: instalar OpenCode y dejar un acceso directo en el Escritorio para abrir
+proyectos con doble clic y Terminal visible.
 
-## Objetivos de experiencia de uso
+Este documento es la guia principal para usuarios de prueba.
 
-- Terminal visible en todo momento
-- Mensajes en espanol (ASCII, sin acentos)
-- Valores por defecto seguros; sin acciones destructivas silenciosas
-- Flujo lineal y claro para usuarios no tecnicos
+## Ciclo completo (de GitHub a primer uso)
 
-## Estado del proyecto
+1) :inbox_tray: En GitHub, abre el repositorio y descarga el ZIP con el boton verde "Code".
+2) :package: Descomprime el ZIP en tu Mac.
+3) :open_file_folder: Entra a la carpeta descargada.
+   Nota: GitHub suele cambiar el nombre de la carpeta al descomprimir el ZIP.
+4) :hammer_and_wrench: Doble clic en `OpenCode Installer.command`.
+5) :unlock: Si macOS lo bloquea, clic derecho > Abrir.
+6) :speech_balloon: Sigue los pasos en la Terminal (Homebrew, idioma, modo local o remoto, descarga de modelo si aplica).
+7) :desktop_computer: Al final veras `OpenCode Launcher.command` en el Escritorio.
+8) :rocket: Doble clic en el acceso directo `OpenCode Launcher.command`, elige una carpeta, y OpenCode se abre en esa carpeta.
 
-- Ver estado actualizado en `memsys3/memory/project-status.yaml`
+Sugerencia para tu primer mensaje en OpenCode: "Resume este proyecto y lista los archivos principales."
 
-## Estructura del repositorio
+## Si algo falla (soluciones rapidas)
 
-- `openkit_installer/`: scripts de instalacion y acceso directo para macOS
-- `memsys3/`: memoria persistente para contexto del agente
+- :warning: macOS dice "danado" o no deja abrir: abre Terminal y ejecuta `xattr -dr com.apple.quarantine "NOMBRE_DE_LA_CARPETA"`, luego reintenta.
+- :warning: macOS vuelve a bloquear: clic derecho > Abrir y confirma.
+- :warning: No aparece el selector de carpetas: revisa permisos de Automatizacion/AppleScript y reintenta.
+- :warning: Ollama no abre en modo local: abre la aplicacion Ollama manualmente y vuelve a abrir el acceso directo.
+- :warning: OpenCode no esta instalado: ejecuta de nuevo `OpenCode Installer.command`.
 
-## Ciclo de distribucion (GitHub)
+## Modo local (Ollama)
 
-Este repositorio es el remoto de desarrollo y correcciones de OpenKit. Los usuarios de prueba usan la
-carpeta `openkit_installer/` descargada desde GitHub.
+- Modelo recomendado: `qwen2.5-coder:14b`
+- Espacio del modelo: ~8-9 GB
+- Total aproximado (Ollama + OpenCode + modelo): ~9-11 GB
+- Espacio libre recomendado para descargar: ~12 GB
 
-Flujo:
-
-1) Actualizamos scripts y documentacion en `openkit_installer/`.
-2) Subimos cambios a `https://github.com/caedrus-tec/OpenKit.git`.
-3) El usuario de prueba descarga el ZIP del repositorio desde GitHub.
-4) Entra a `openkit_installer/` y sigue `openkit_installer/README.md`.
-
-Nota: no se comparte un ZIP externo; GitHub genera el ZIP automaticamente.
-
-## Uso rapido (desarrollo)
-
-1) Abre `openkit_installer/OpenCode Installer.command`
-2) Sigue los pasos en la Terminal
-3) Se copiara el acceso directo al Escritorio
-4) Abre `~/Desktop/OpenCode Launcher.command` y elige una carpeta
-
-Para guia paso a paso para usuarios de prueba, ver `openkit_installer/README.md`.
-
-## Configuracion y datos
+## Datos y configuracion (para soporte)
 
 - Autenticacion: `~/.local/share/opencode/auth.json`
 - Configuracion principal: `~/.config/opencode/opencode.json`
@@ -53,38 +44,6 @@ Para guia paso a paso para usuarios de prueba, ver `openkit_installer/README.md`
 - Preferencia instalador (sin pausa): `~/.config/opencode/installer-no-pause`
 - Acceso directo: `~/Desktop/OpenCode Launcher.command`
 
-## Modo local (Ollama)
+---
 
-- Modelo por defecto: `qwen2.5-coder:14b`
-- Tamano del modelo: ~8-9 GB
-- Total estimado (Ollama + OpenCode + modelo): ~9-11 GB
-- Espacio libre recomendado para descargar el modelo: ~12 GB
-
-## Pruebas basicas
-
-No hay sistema de pruebas. Para verificacion basica:
-
-```bash
-bash -n "openkit_installer/OpenCode Installer.command"
-bash -n "openkit_installer/OpenCode Launcher.command"
-```
-
-## Notas para agentes (memsys3)
-
-memsys3 es una herramienta de memoria persistente para dar contexto al agente.
-No es el producto; el foco principal es OpenKit.
-
-- Iniciar sesion con `@memsys3/prompts/newSession.md`
-- Registrar cambios en `memsys3/memory/full/sessions.yaml`
-- Mantener `memsys3/memory/project-status.yaml` actualizado
-- Si hay decisiones importantes, agregar ADR en `memsys3/memory/full/adr.yaml`
-- Compilar contexto con `@memsys3/prompts/compile-context.md` cuando aplique
-
-## Convenciones clave para scripts
-
-- Mantener `#!/bin/bash`
-- Citar rutas y variables: `"$VAR"`
-- Usar `command -v` para detectar herramientas
-- Usar `read -r -p` para preguntas
-- Forzar PATH con `/opt/homebrew/bin` y `/usr/local/bin`
-- No sobrescribir configuraciones del usuario sin comprobaciones
+Hecho por Victor, desarrollador freelancer. Gracias por probar OpenKit.
