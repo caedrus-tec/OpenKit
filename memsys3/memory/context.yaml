@@ -1,0 +1,87 @@
+# Context compiled by Context Agent
+metadata:
+  compilado_por: "Context Agent"
+  ultima_compilacion: "2026-03-16"
+  version_context: "v1"
+
+project:
+  nombre: "OpenKit"
+  descripcion: "Instalador y launcher para OpenCode CLI en macOS con UX simple para usuarios no tecnicos."
+  fase: "Planificacion"
+  ultima_feature: "Endurecimiento installer/launcher y docs para testers"
+  siguiente_milestone: "Probar flujo con testers en Mac real y decidir empaquetado .app"
+
+features:
+  feature_1:
+    nombre: "Installer y launcher con doble click"
+    url: ""
+    estado: "operativo"
+    descripcion: "Scripts .command con terminal visible, flujo guiado y modo local opcional con Ollama."
+
+stack:
+  frontend: "Por definir"
+  backend: "Por definir"
+  database: ""
+  deploy: "Local, MVP para Sonoma"
+
+urls:
+  production: ""
+  staging: ""
+
+adrs: []
+
+ultima_sesion:
+  data: "2026-03-16"
+  duracion: "~2h"
+  que_es_va_fer:
+    - "Endurecimiento de installer/launcher con validaciones de archivos y mensajes de error"
+    - "Chequeo de espacio con fallback y confirmaciones claras"
+    - "Docs y QA simplificados para testers no tecnicos"
+  decisions:
+    - "Priorizar mensajes claros y abortos seguros en pasos sensibles"
+    - "Mantener avisos no fatales para Ollama/Finder"
+  proximos_pasos:
+    - "Probar flujo completo con testers en Mac real"
+    - "Validar flujo sin internet con modelo Ollama ya descargado"
+
+gotchas: []
+
+pendientes:
+  - prioritat: 1
+    tasca: "Probar instalador y launcher en Mac M3 real"
+    detall: "Validar UX con QA_OPENKIT.txt actualizado, permisos y arranque de OpenCode"
+  - prioritat: 2
+    tasca: "Definir idioma para UI y codigo"
+    detall: "Alinear lenguaje con usuarios objetivo"
+  - prioritat: 3
+    tasca: "Definir stack frontend y backend"
+    detall: "Elegir framework/version y runtime"
+
+backlog:
+  sistema: "No existe memsys3/backlog/README.md"
+  estadisticas:
+    issues: "0"
+    features: "0"
+    improvements: "0"
+    otros: "0"
+  items_criticos: []
+
+notas_compilacion:
+  adrs_totals: "0"
+  adrs_incluidas: "0"
+  sesiones_totales: "3"
+  sesiones_incluidas: "1"
+  sesiones_por_peso:
+    alto: "0"
+    medio: "1"
+    bajo: "0"
+  pesos_ajustados: "ninguno"
+  backlog_existe: "false"
+  backlog_items_totales: "0"
+  backlog_items_incluidos: "0"
+  justificacion_backlog: "No existe backlog"
+  tokens_iniciales: "no calculado"
+  tokens_finales: "no calculado"
+  archivamiento: "no"
+  criterioos_filtraje: "Sintesis de la sesion mas reciente por peso e impacto en UX y estabilidad"
+  lineas_totales: "no calculado"

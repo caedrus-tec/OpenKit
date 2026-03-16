@@ -1,0 +1,157 @@
+# Sessions Log Template (YAML)
+# Histórico de todas las sesiones de trabajo significativas
+# Formato cronológico inverso (más reciente primero)
+
+sessions:
+  - id: "YYYY-MM-DD"
+    titulo: "[Títol Descriptiu de la Sessió]"
+    data: "YYYY-MM-DD"
+    duracion: "[Xh o X dies]"
+    peso: "medio"  # bajo|medio|alto - Importancia arquitectónica (🟢🟡🔴)
+    participantes: ["Nom/Agent"]
+    objetivo: "[Què es volia aconseguir en aquesta sessió]"
+
+    features_implementadas:
+      - nombre: "[Feature 1]"
+        descripcion: "Descripción breve de lo que se ha hecho"
+      - nombre: "[Feature 2]"
+        descripcion: "Descripción breve"
+      - nombre: "[Tasca 3]"
+        descripcion: "Descripción breve"
+
+    problemas_resueltos:
+      - problema: "[Problema 1]"
+        solucion: "[Cómo se resolvió]"
+      - problema: "[Problema 2]"
+        solucion: "[Cómo se resolvió]"
+
+    decisiones_tomadas:
+      - decision: "[Decisió 1]"
+        justificacion: "Breve justificación"
+        adr_relacionada: null  # Si es decisión arquitectónica importante, ID del ADR
+      - decision: "[Decisió 2]"
+        justificacion: "Breve justificación"
+        adr_relacionada: null
+
+    tecnologias_agregadas:
+      - nombre: "[Llibreria 1]"
+        motivo: "Por qué se ha añadido"
+      - nombre: "[Tool 2]"
+        motivo: "Propósito"
+
+    deployments:
+      - servei: "[Servei 1]"
+        url: "https://..."
+      - servei: "[Servei 2]"
+        url: "https://..."
+
+    gotchas:
+      - tipo: "[warning|error|gotcha]"
+        problema: "[Descripción del problema o trampa encontrada]"
+        solucion: "[Cómo resolverlo o evitarlo]"
+        criticidad: "[alta|media|baja]"
+      - tipo: "[TIPUS]"
+        problema: "[PROBLEMA]"
+        solucion: "[SOLUCIÓ]"
+        criticidad: "[CRITICITAT]"
+
+    proximos_pasos:
+      - "[Tarea pendiente 1]"
+      - "[Tarea pendiente 2]"
+      - "[Tarea pendiente 3]"
+
+    notas_adicionales: |
+      Cualquier contexto extra, blockers encontrados, aprendizajes, etc.
+      Soporta texto multilínea.
+
+# ============================================
+# INSTRUCCIONES DE USO
+# ============================================
+
+instruccions:
+  ordre: "Añade nuevas sesiones al PRINCIPIO del array (orden inverso cronológico)"
+  concisio: "Sé conciso pero completo - detalles suficientes para entender contexto"
+  adr_links: "Linkea ADRs (campo adr_relacionada) si se toman decisiones arquitectónicas"
+  peso_sesion: "Evalúa peso (bajo/medio/alto) ANTES de documentar - ajusta densidad según importancia"
+  consistencia: "Usa siempre el mismo formato para facilitar parsing del Context Agent"
+
+# ============================================
+# EJEMPLOS DE BUENA DOCUMENTACIÓN
+# ============================================
+
+exemples:
+  bo: |
+    features_implementadas:
+      - nombre: "Exportació PDF professional"
+        descripcion: |
+          Cambiado de html2canvas a jsPDF para mejor calidad
+          Formato A4 con márgenes 20mm
+          10 cláusulas legales LAU incluidas
+
+  massa_detallat: |
+    # EVITAR esto:
+    features_implementadas:
+      - nombre: "Cambiado padding del botón"
+        descripcion: "De 10px a 12px"
+      - nombre: "Actualizado color"
+        descripcion: "De #fff a #f0f0f0"
+      - nombre: "Arreglado typo"
+        descripcion: "descipcion → descripcion en línea 234"
+
+  massa_vague: |
+    # EVITAR esto:
+    features_implementadas:
+      - nombre: "Mejorado sistema de procesamiento"
+        descripcion: "Arreglados bugs"
+
+  gotchas_bons: |
+    # ASÍ SÍ - Gotchas críticos y útiles:
+    gotchas:
+      - tipo: "error"
+        problema: "useAuth() hook solo funciona dentro de AuthProvider"
+        solucion: "Wrap componente principal con <AuthProvider>"
+        criticidad: "alta"
+
+      - tipo: "warning"
+        problema: "Vercel activa Deployment Protection por defecto"
+        solucion: "Desactivar en Settings > Deployment Protection"
+        criticidad: "media"
+
+  gotchas_dolents: |
+    # EVITAR esto - No son gotchas críticos:
+    gotchas:
+      - tipo: "gotcha"
+        problema: "El botón no tiene focus state"
+        solucion: "Añadir outline al CSS"
+        criticidad: "baja"  # Demasiado trivial
+
+  peso_alto_ejemplo: |
+    # PESO ALTO - ADR o decisión arquitectónica:
+    - id: "2025-01-15-cambio-arquitectura-pdf"
+      peso: "alto"
+      features_implementadas:
+        - nombre: "Migración html2canvas → jsPDF"
+          descripcion: |
+            CONTEXTO: html2canvas pixelado (300 DPI insuficiente)
+            ALTERNATIVAS: Puppeteer (descartado), react-pdf (limitado)
+            ELEGIDO: jsPDF + autotable (profesional, seleccionable)
+            IMPACTO: Todos los PDFs del proyecto ahora profesionales
+      decisiones_tomadas:
+        - decision: "ADR-003: jsPDF como estándar PDF"
+          adr_relacionada: "003"
+
+  peso_medio_ejemplo: |
+    # PESO MEDIO - Feature estándar:
+    - id: "2025-01-20-formulario-validacion"
+      peso: "medio"
+      features_implementadas:
+        - nombre: "Validación formulario contacto"
+          descripcion: "Zod schema, mensajes error, UX mejorada"
+
+  peso_bajo_ejemplo: |
+    # PESO BAJO - Fix menor:
+    - id: "2025-01-25-fix-typos-css"
+      peso: "bajo"
+      highlights:
+        - "5 typos README corregidos"
+        - "Padding header 10px → 12px"

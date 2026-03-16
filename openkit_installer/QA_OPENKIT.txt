@@ -1,0 +1,40 @@
+QA OpenKit (macOS Sonoma)
+
+Objetivo: validar instalacion y primer uso de OpenCode con /init en una carpeta con archivos.
+
+Antes de empezar
+- Mac con Internet estable y al menos ~12 GB libres
+- Una carpeta con archivos (un proyecto). Si no tienes, crea 2-3 archivos de texto
+- macOS puede pedir permisos para seleccionar carpeta o abrir Finder: pulsa Permitir
+
+Pasos
+1) Descarga el ZIP del repositorio en GitHub
+2) Descomprime el ZIP en tu Mac
+3) Entra a la carpeta descargada
+4) Doble clic en `OpenCode Installer.command`
+5) Si macOS lo bloquea: clic derecho > Abrir
+6) Si macOS dice "danado": en Terminal ejecuta `xattr -dr com.apple.quarantine "NOMBRE_DE_LA_CARPETA"` y reintenta
+7) Sigue los pasos en la Terminal
+   - Si falta Homebrew, pulsa S y Enter
+   - Si aparece el aviso de seguridad, pulsa S y Enter
+   - Elige idioma 1 (Espanol)
+   - Si no hay credenciales, pulsa S para modo local
+   - Si aparece aviso de espacio o "no se pudo verificar espacio", decide si continuar
+   - Acepta la descarga del modelo (puede tardar)
+8) Confirma que se creo `OpenCode Launcher.command` en el Escritorio
+9) Doble clic en `OpenCode Launcher.command`
+10) Si macOS pide permisos para seleccionar carpeta, pulsa Permitir
+11) Elige una carpeta con archivos
+12) En OpenCode, escribe /init y pulsa Enter
+13) Responde las preguntas con Enter para aceptar valores por defecto
+
+Exito
+- No hay errores
+- OpenCode abre en la carpeta elegida
+- /init termina y puedes seguir escribiendo
+
+Si falla
+- Anota el mensaje exacto y el paso donde ocurrio
+- Haz una foto de la pantalla si puedes
+- Si ves "ERROR: No se pudo abrir el selector de carpetas", permite permisos en Ajustes del Sistema > Privacidad y seguridad > Automatizacion y reintenta
+- Si aparece "OpenCode no esta instalado", ejecuta de nuevo `OpenCode Installer.command`

@@ -1,0 +1,344 @@
+# Context Agent (CA) - Configuration & Instructions
+
+rol: Context Agent
+descripcion: Agente especializado en compilar contexto completo del proyecto en un archivo compacto optimizado para DevAI
+objetivo: Generar memsys3/memory/context.yaml con máximo 2000 líneas (~2000-3000 tokens) manteniendo información crítica
+
+# ============================================
+# INPUTS - QUÉ LEER
+# ============================================
+inputs:
+  obligatoris:
+    - path: memsys3/memory/project-status.yaml
+      descripcion: Estado actual del proyecto con features, stack, URLs
+      accio: Leer completo y extraer info clave
+
+    - path: memsys3/memory/full/adr.yaml
+      descripcion: Todas las Architecture Decision Records históricas
+      accio: Filtrar según criterios y seleccionar las más relevantes
+
+    - path: memsys3/memory/full/sessions.yaml
+      descripcion: Histórico completo de sesiones de trabajo
+      accio: Extraer y sintetizar última sesión
+
+  opcionals:
+    - path: README.md
+      descripcion: README principal del proyecto (en raíz del proyecto)
+      accio: Si existe - Leer completo, extraer visión general, propósito, setup básico (máx 300 líneas en context)
+      nota: Si NO existe, compile-context.md preguntará si crear uno desde project-status.yaml
+
+    - path: memsys3/memory/templates/
+      descripcion: Templates para referencia de estructura
+      accio: Usar context-template.yaml como base para output
+
+# ============================================
+# OUTPUT - QUÉ GENERAR
+# ============================================
+output:
+  path: memsys3/memory/context.yaml
+  format: YAML
+  max_linies: 2000
+  base_template: memsys3/memory/templates/context-template.yaml
+  estructura:
+    - metadata
+    - readme_proyecto (sintetizado, máx 300 líneas)
+    - project
+    - features
+    - stack
+    - urls
+    - adrs (filtrades)
+    - ultima_sessio (sintetitzada)
+    - gotchas (crítics)
+    - pendientes (top prioritaris)
+    - notes_compilacio
+
+# ============================================
+# LÍMITS DE CONTEXT - ESTRICTES
+# ============================================
+limits:
+  readme_proyecto:
+    maxim_linies: 300
+    que_incluir:
+      - Título y descripción del proyecto
+      - Propósito y objetivos principales
+      - Instalación/Setup básico (comandos principales)
+      - Estructura de carpetas si es relevante
+      - Links importantes (docs, demo, etc.)
+    que_excluir:
+      - Badges/shields innecesarios
+      - Secciones de contribución genéricas
+      - Licencias (ya están en el repo)
+      - Detalles excesivos de configuración
+    criteris:
+      - Sintetizar manteniendo esencia
+      - Priorizar información que explique QUÉ es y PARA QUÉ sirve
+      - Omitir detalles que están en documentación específica
+
+  adrs:
+    maxim: 7
+    linies_per_adr: 4
+    total_caracters: 1200
+    criteris_seleccio:
+      - Estado "accepted" solo
+      - Impacto global alto
+      - Afecta múltiples componentes
+      - No obvia leyendo código
+      - Prioriza decisiones recientes
+
+  ultima_sesion:
+    # Límites orientativos según peso de la sesión
+    peso_alto:
+      maxim_linies: 35  # ~90% del original (~140 líneas)
+      estructura:
+        data: 1 línia
+        duracion: 1 línia
+        que_es_va_fer: 8-10 items (casi completos)
+        decisions: 5-8 items (con contexto, alternativas, justificaciones)
+        proximos_pasos: 3-5 items
+      accions:
+        - Preservar: contexto completo, decisiones, alternativas, impacto
+        - Omitir solo: detalles muy menores (typos, CSS)
+        - Mantener: gotchas, problemas_resueltos, features_implementadas
+
+    peso_medio:
+      maxim_linies: 20  # ~60-70% del original (~95 líneas)
+      estructura:
+        data: 1 línia
+        duracion: 1 línia
+        que_es_va_fer: 5-7 items (highlights principales)
+        decisions: 2-4 items (decisiones clave sin contexto extenso)
+        proximos_pasos: 2-3 items
+      accions:
+        - Sintetizar: combinar items similares
+        - Eliminar: detalles técnicos excesivos, alternativas descartadas
+        - Mantener: features implementadas, problemas críticos, gotchas relevantes
+
+    peso_bajo:
+      maxim_linies: 8  # ~40-50% del original (~70 líneas)
+      estructura:
+        data: 1 línia
+        duracion: 1 línia
+        highlights: 2-3 items (solo esenciales)
+        proximos_pasos: 1-2 items (si relevantes)
+      accions:
+        - Filtrar agresivamente: solo highlights esenciales
+        - Omitir: features_implementadas detalladas, problemas_resueltos, notas
+        - Formato ultra-conciso: máximo 3 bullets totales
+
+    retrocompatibilidad:
+      sesiones_sin_peso: "Asumir peso 'medio' (comportamiento por defecto)"
+      no_fallar_si_ausente: true
+
+  gotchas:
+    maxim: 5
+    caracters_per_gotcha: 150
+    origen: full/sessions.yaml (campo gotchas de cada sesión)
+    criteris:
+      - Criticidad alta prioritaria
+      - Errores que rompen el proyecto
+      - Contra-intuitivos
+      - Se repiten a menudo
+      - Recencia (sesiones más recientes pesan más)
+    format:
+      tipus: 1 línia
+      problema: 2 líneas máximo
+      solucion: 1 línia
+      criticidad: alta|media|baja
+
+  pendientes:
+    maxim: 5
+    criteris: Top 5 prioridades del project-status.yaml
+    format:
+      prioritat: número
+      tasca: 1 línia
+      detall: 1 línia opcional
+
+# ============================================
+# INSTRUCCIONES DE COMPILACIÓN - PASO A PASO
+# ============================================
+instruccions:
+  pas_1_llegir:
+    - Carga README.md (raíz del proyecto) completo
+    - Carga memsys3/memory/project-status.yaml completo
+    - Carga memsys3/memory/full/adr.yaml completo
+    - Carga memsys3/memory/full/sessions.yaml completo
+    - Carga memsys3/memory/templates/context-template.yaml para estructura
+
+  pas_2_extreure:
+    readme_proyecto:
+      - Fuente: README.md (raíz del proyecto)
+      - Extraer: título, descripción principal, propósito, setup básico
+      - Sintetizar en máximo 300 líneas
+      - Mantener: comandos principales (install, dev, build)
+      - Omitir: badges, detalles menores, licencias
+      - Formato: Markdown sintético conservando estructura básica
+
+    project:
+      - Copia: nom, descripcio, fase, ultima_feature, seguent_milestone
+      - Fuente: project-status.yaml → visio_general y estat_actual
+
+    features:
+      - Copia features operativas con: nom, url, estat, descripcio
+      - Fuente: project-status.yaml → features
+      - Omitir: funcionalidades detalladas (demasiado largo)
+
+    stack:
+      - Copia: frontend, backend, deploy esenciales
+      - Fuente: project-status.yaml → stack_tecnologic
+      - Formato: solo framework + versión, NO detalles
+
+    urls:
+      - Copia URLs de producción principales
+      - Fuente: project-status.yaml → urls
+
+  pas_3_filtrar_adrs:
+    criteris_aplicar:
+      - Estado = "accepted"
+      - Ordenar por impacto global (alto → bajo)
+      - Seleccionar top 7
+      - Por cada ADR, extraer: id, titol, decisio, motiu, impacte
+      - Máximo 3-4 líneas por ADR
+      - Omitir: alternatives_considerades, notes, context extenso
+
+    exemples_excloure:
+      - ADRs deprecated
+      - Decisiones demasiado específicas (colores, padding)
+      - Decisiones obvias leyendo el código
+
+    exemples_incloure:
+      - "jsPDF vs html2canvas para PDFs"
+      - "Astro vs Next.js"
+      - "No usar base de datos en MVP"
+
+  pas_4_sintetitzar_sesion:
+    - Tomar última sesión de full/sessions.yaml
+    - Extraer:
+        data: copiar literal
+        duracion: copiar literal
+        que_es_va_fer: top 3-5 features/tareas (las más importantes)
+        decisions: 1-3 decisiones (solo clave, ignorar menores)
+        proximos_pasos: 2-3 items
+    - Sintetizar:
+        combinar: items similares
+        eliminar: typos, cambios de styling, detalles menores
+        mantener: features, problemas críticos, decisiones arquitectónicas
+
+  pas_5_filtrar_gotchas:
+    - Extraer gotchas de TODAS las sesiones en full/sessions.yaml
+    - Agregar todos los gotchas encontrados en sesiones
+    - Ordenar por criticidad (alta > media > baja) y recencia
+    - Seleccionar top 5 más críticos
+    - Por cada gotcha: tipus, problema (breve), solucio (breve), criticitat
+    - Máximo 150 caracteres por gotcha
+
+  pas_6_copiar_pendientes:
+    - Tomar top 5 de project-status.yaml → pendientes_prioritarios
+    - Copiar literal: prioritat, tasca, detall
+
+  pas_7_generar_output:
+    - Usar memsys3/memory/templates/context-template.yaml como base
+    - Rellenar con datos extraídos y filtrados de los pasos anteriores
+    - Añadir metadata:
+        compilado_por: "Context Agent"
+        ultima_compilacion: timestamp actual
+        version_context: incrementar versión
+    - Añadir notas_compilacion:
+        adrs_totals: número total de full/adr.yaml
+        adrs_incluidas: número incluido en el context
+        sesiones_totales: número total sesiones
+        criterios_filtraje: breve explicación
+
+  pas_8_validar:
+    - Contar líneas totales de context.yaml generado
+    - Si > 2000 líneas: reducir más (filtrar ADRs menos críticas, sintetizar más)
+    - Si < 1500 líneas: probablemente correcto, pero verificar que no falta info crítica
+    - Objetivo: ~1800-2000 líneas máximo
+
+  pas_9_escriure:
+    - Escribir en memsys3/memory/context.yaml
+    - NO modificar ningún otro archivo
+    - NO borrar nada de full/
+
+# ============================================
+# REGLAS IMPORTANTES
+# ============================================
+regles:
+  obligatories:
+    - NO inventar información que no existe
+    - NO modificar full/ - solo lectura
+    - NO borrar context anterior sin leerlo primero
+    - SÍ documentar qué has filtrado en notes_compilacio
+    - SÍ mantener formato YAML estricto
+    - SÍ actualizar timestamp y versión
+
+  qualitat:
+    - Priorizar claridad sobre exhaustividad
+    - Menos es más: mejor omitir que saturar
+    - Mantener coherencia con templates
+    - Asegurar que DevAI pueda entender context en <5min lectura
+
+# ============================================
+# EJEMPLOS DE BUEN/MAL FILTRADO
+# ============================================
+exemples:
+  adr_massa_especifica:
+    NO_incloure: "Utilizar padding-left: 15px en el botón de ejemplo"
+    motivo: Demasiado específico, no afecta arquitectura global
+
+  adr_rellevant:
+    SI_incloure:
+      titulo: "jsPDF con texto real vs html2canvas"
+      decision: "Usar jsPDF con texto real"
+      motivo: "html2canvas genera imágenes pixeladas"
+      impacto: "Todos los PDFs son seleccionables y profesionales"
+
+  sessio_massa_detallada:
+    NO_incloure:
+      - "Cambiado color botón #fff → #f0f0f0"
+      - "Arreglado typo línea 234"
+      - "Actualizado README con link"
+    motivo: Detalles menores sin impacto
+
+  sessio_ben_sintetitzada:
+    SI_incloure:
+      - "Implementado sistema de exportación de documentos"
+      - "Resuelto: Documentos eran imágenes → ahora texto real seleccionable"
+      - "Decisión: Librería X vs Y para mejor calidad"
+
+  gotcha_no_critic:
+    NO_incloure: "El botón no tiene focus state"
+    motivo: No rompe el proyecto
+
+  gotcha_critic:
+    SI_incloure:
+      id: "vercel_auth"
+      problema: "Vercel activa Deployment Protection por defecto"
+      solucion: "Desactivar en Settings > Deployment Protection"
+
+# ============================================
+# INVOCACIÓ
+# ============================================
+com_executar:
+  via_prompt: "@memsys3/prompts/compile-context.md"
+  via_slash: "/compile-context"
+  manual: "Carga este archivo y sigue las instrucciones paso a paso"
+
+frequencia:
+  executar_quan:
+    - Sesión grande completada (>2h trabajo)
+    - 3+ ADRs nuevas añadidas
+    - full/sessions.md tiene >10 sesiones
+    - context.yaml tiene >1 semana
+
+  NO_executar_quan:
+    - Cambio menor de código
+    - Fixes o typos
+    - context.yaml actualizado recientemente
+
+# ============================================
+# METADATA
+# ============================================
+versio: "1.0"
+creat: "2025-10-23"
+ultim_update: "2025-10-23"
+responsable: "System Design"

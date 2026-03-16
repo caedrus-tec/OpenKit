@@ -1,0 +1,155 @@
+# Sessions Log - [NOMBRE_PROYECTO]
+# Histórico de sesiones de desarrollo
+
+sessions:
+  - id: "2026-03-16-endurecimiento-installer-launcher-docs"
+    titulo: "Endurecimiento installer/launcher y docs para testers"
+    data: "2026-03-16"
+    duracion: "~2h"
+    peso: "medio"
+    participantes: ["OpenCode"]
+    objetivo: "Reforzar seguridad y estabilidad del installer/launcher y ajustar docs para testers no tecnicos."
+
+    features_implementadas:
+      - nombre: "Homebrew con descarga y confirmacion segura"
+        descripcion: "Aviso de seguridad, descarga a archivo temporal y abortos claros si falla."
+      - nombre: "Validaciones de archivos y permisos"
+        descripcion: "Errores visibles en mkdir/cat/cp/chmod al escribir configs o copiar launcher."
+      - nombre: "Chequeo de espacio con fallback"
+        descripcion: "Si df falla, se avisa y se pide confirmacion antes de descargar modelo."
+      - nombre: "Launcher mas robusto"
+        descripcion: "Manejo de error del selector de carpetas, validacion de carpeta y avisos de Ollama."
+      - nombre: "Docs y QA simplificados"
+        descripcion: "README y QA ajustados al flujo real para testers no tecnicos."
+
+    problemas_resueltos:
+      - problema: "Ejecucion de script remoto sin aviso extra"
+        solucion: "Confirmacion explicita y ejecucion desde archivo temporal."
+      - problema: "Fallos silenciosos al escribir configs o copiar launcher"
+        solucion: "Validaciones y mensajes de error en operaciones de archivos."
+      - problema: "Launcher confundia cancelacion con error"
+        solucion: "Diferenciar errores de AppleScript y mostrar instrucciones."
+      - problema: "Chequeo de espacio omitido si df fallaba"
+        solucion: "Aviso y confirmacion si no se puede medir espacio."
+
+    decisiones_tomadas:
+      - decision: "Priorizar mensajes claros y abortos seguros en pasos sensibles"
+        justificacion: "Reduce riesgo y mejora la estabilidad para usuarios no tecnicos."
+        adr_relacionada: null
+      - decision: "Mantener avisos no fatales para Ollama/Finder"
+        justificacion: "Permite continuar sin bloquear el flujo principal."
+        adr_relacionada: null
+
+    tecnologias_agregadas: []
+    deployments: []
+    gotchas: []
+
+    proximos_pasos:
+      - "Enviar zip actualizado a testers y recoger feedback"
+      - "Validar flujo sin internet con modelo Ollama ya descargado"
+      - "Confirmar permisos del selector de carpetas en macOS"
+
+    notas_adicionales: |
+      Se actualizo openkit_installer/README.md y QA_OPENKIT.txt para lenguaje simple.
+      Se regenero OpenKit-para-testers.zip con installer, launcher y docs.
+
+  - id: "2026-03-16-mejoras-ux-installer-qa"
+    titulo: "Mejoras UX installer y QA para testers"
+    data: "2026-03-16"
+    duracion: "~2h"
+    peso: "medio"
+    participantes: ["OpenCode"]
+    objetivo: "Mejorar UX del installer para usuarios no tecnicos y preparar QA para testers."
+
+    features_implementadas:
+      - nombre: "Confirmaciones y mensajes claros"
+        descripcion: "Resumen antes de instalar Homebrew, aviso de ajuste de PATH y version de OpenCode visible tras instalar."
+      - nombre: "Reconfiguracion de idioma"
+        descripcion: "Opcion para revisar o cambiar idioma sin reinstalar."
+      - nombre: "Validacion de auth y login remoto guiado"
+        descripcion: "Validacion JSON de auth.json y menu para login remoto con opcion de omitir."
+      - nombre: "Control de espacio y descarga Ollama"
+        descripcion: "Chequeo en el volumen de modelos y confirmacion con estimacion de tiempo/espacio antes de descargar."
+      - nombre: "Proteccion de sobrescrituras"
+        descripcion: "Confirmacion y backup al reemplazar config y launcher del Escritorio."
+      - nombre: "QA para testers"
+        descripcion: "Documento QA_OPENKIT.txt con version corta y larga para pruebas guiadas."
+
+    problemas_resueltos:
+      - problema: "Riesgo de instalar Homebrew y descargar modelos sin contexto claro"
+        solucion: "Agregar resumen y confirmaciones explicitas en pasos criticos."
+      - problema: "Auth.json invalido podia evitar el modo local"
+        solucion: "Validacion JSON antes de asumir credenciales."
+      - problema: "Chequeo de espacio en volumen equivocado"
+        solucion: "Usar ruta de modelos de Ollama (OLLAMA_MODELS/OLLAMA_HOME)."
+      - problema: "Sobrescritura silenciosa de launcher y config"
+        solucion: "Confirmaciones y backups con timestamp."
+
+    decisiones_tomadas:
+      - decision: "Preferir UX rapida con prompts cortos y defaults seguros"
+        justificacion: "Usuarios no tecnicos necesitan confirmaciones claras sin exceso de pasos."
+        adr_relacionada: null
+      - decision: "Guardar preferencia de cierre sin pausa en archivo dedicado"
+        justificacion: "Permite flujo rapido en futuras ejecuciones sin perder seguridad inicial."
+        adr_relacionada: null
+
+    tecnologias_agregadas: []
+    deployments: []
+    gotchas: []
+
+    proximos_pasos:
+      - "Probar flujo completo en Mac M3 real con QA_OPENKIT.txt"
+      - "Recoger feedback de testers y ajustar mensajes si hace falta"
+      - "Validar flujo remoto con login omitido y posterior"
+
+    notas_adicionales: |
+      Se actualizaron README.md, openkit_installer/README.md y AGENTS.md para
+      reflejar los nuevos prompts y la preferencia installer-no-pause.
+
+  - id: "2026-03-15-installer-opencode-macos"
+    titulo: "Installer macOS con launcher y modo Ollama"
+    data: "2026-03-15"
+    duracion: "~2h"
+    peso: "medio"
+    participantes: ["Claude"]
+    objetivo: "Definir e implementar el flujo de instalacion y arranque local de OpenCode en macOS."
+
+    features_implementadas:
+      - nombre: "Installer y launcher con doble click"
+        descripcion: "Scripts .command con terminal visible para instalar OpenCode y arrancar en carpeta elegida."
+      - nombre: "Modo local con Ollama"
+        descripcion: "Instalacion opcional de Ollama y descarga de qwen2.5-coder:14b con config local."
+      - nombre: "Preferencia de idioma persistente"
+        descripcion: "Pregunta de idioma en instalador y guardado en instructions-language.md."
+
+    problemas_resueltos:
+      - problema: "Evitar sobrescribir configuraciones existentes de OpenCode"
+        solucion: "Configurar archivo dedicado opencode.ollama.json si ya existe opencode.json."
+      - problema: "Disponibilidad de brew/opencode desde scripts GUI"
+        solucion: "Forzar PATH y shellenv para /opt/homebrew/bin y /usr/local/bin."
+
+    decisiones_tomadas:
+      - decision: "Usar scripts .command con terminal visible en lugar de .app"
+        justificacion: "Menor friccion inicial y sin necesidad de firma/notarizacion."
+        adr_relacionada: null
+      - decision: "Modelo local por defecto: qwen2.5-coder:14b"
+        justificacion: "Mejor equilibrio calidad/latencia para M3 sin suscripcion."
+        adr_relacionada: null
+
+    tecnologias_agregadas:
+      - nombre: "Ollama (opcional)"
+        motivo: "Proveedor local sin suscripcion para ejecutar modelos en el equipo."
+
+    deployments: []
+    gotchas: []
+
+    proximos_pasos:
+      - "Probar el flujo completo en un Mac M3 real"
+      - "Decidir si se empaqueta como .app firmado"
+      - "Validar onboarding remoto vs local en usuarios no tecnicos"
+
+    notas_adicionales: |
+      Archivos clave del flujo: openkit_installer/OpenCode Installer.command y
+      openkit_installer/OpenCode Launcher.command. Config local guardada en
+      ~/.config/opencode/opencode.ollama.json (si opencode.json ya existe) y
+      preferencia de idioma en ~/.config/opencode/instructions-language.md.
