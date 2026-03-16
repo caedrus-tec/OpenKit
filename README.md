@@ -19,6 +19,12 @@ Este documento es la guia principal para usuarios de prueba.
 
 Sugerencia para tu primer mensaje en OpenCode: "Resume este proyecto y lista los archivos principales."
 
+## Nota para desarrollo interno (ramas)
+
+- `dev` es la rama local de trabajo con `memsys3/` y `AGENTS.md`
+- `main` es la rama publicada en GitHub para testers
+- Para publicar: pasa solo cambios de `openkit_installer/` y `README.md` desde `dev` a `main`
+
 ## Si algo falla (soluciones rapidas)
 
 - :warning: macOS dice "danado" o no deja abrir: abre Terminal y ejecuta `xattr -dr com.apple.quarantine "NOMBRE_DE_LA_CARPETA"`, luego reintenta.

@@ -8,9 +8,14 @@ Use this file as the operating manual for agentic work in this repo.
 - `openkit_installer/` holds the user-facing macOS scripts.
 - `openkit_installer/OpenCode Installer.command` installs OpenCode and guides setup.
 - `openkit_installer/OpenCode Launcher.command` opens a folder and runs OpenCode in it.
-- `openkit_installer/README.md` documents UX and behavior.
-- `memsys3/` is the memory system for agent context.
-- `README.md` is the project overview for humans and agents.
+- `memsys3/` is the memory system for agent context (tracked only on dev).
+- `README.md` is the public tester guide (mirrors installer flow).
+
+## Branch workflow (dev/main)
+- `dev` is the local working branch with `memsys3/` and `AGENTS.md` tracked.
+- `main` is the public GitHub branch for testers; it should contain only `openkit_installer/` and `README.md`.
+- Release flow: switch to `main`, restore `openkit_installer/` and `README.md` from `dev`, then commit and push.
+- A local pre-push hook blocks pushes from `dev` to avoid accidental publish.
 
 ## Build / lint / test commands
 There is no formal build system, linter, or test runner configured.
