@@ -2,6 +2,60 @@
 # Histórico de sesiones de desarrollo
 
 sessions:
+  - id: "2026-03-16-flujo-dev-main-publicacion"
+    titulo: "Flujo dev/main y publicacion para testers"
+    data: "2026-03-16"
+    duracion: "~2h"
+    peso: "medio"
+    participantes: ["OpenCode"]
+    objetivo: "Separar trabajo local con memsys3 de la publicacion para testers y unificar la guia en README."
+
+    features_implementadas:
+      - nombre: "Guia unica de testers en README de raiz"
+        descripcion: "README en raiz replica la guia de instalacion y primer uso para mostrarla en GitHub."
+      - nombre: "QA movido a openkit_installer/"
+        descripcion: "QA_OPENKIT.txt vive junto a los scripts para descarga directa."
+      - nombre: "Flujo de ramas dev/main"
+        descripcion: "dev local con memsys3/AGENTS.md; main publica solo openkit_installer/ y README."
+      - nombre: "Proteccion local de push"
+        descripcion: "Hook pre-push bloquea push desde dev para evitar publicaciones accidentales."
+
+    problemas_resueltos:
+      - problema: "GitHub mostraba .gitignore y archivos internos en el repo publico"
+        solucion: "Eliminar .gitignore del repo y usar exclude local; mover README de guia a raiz."
+      - problema: "Necesidad de usar memsys3 local sin publicarlo"
+        solucion: "Separar ramas dev/main y documentar flujo de publicacion."
+
+    decisiones_tomadas:
+      - decision: "Publicar solo main con openkit_installer/ y README"
+        justificacion: "Mantiene el repo publico limpio para testers."
+        adr_relacionada: null
+      - decision: "Mantener memsys3 y AGENTS.md en dev local"
+        justificacion: "Permite contexto y prompts sin exponerlos en GitHub."
+        adr_relacionada: null
+      - decision: "Bloquear push desde dev con hook local"
+        justificacion: "Reduce riesgo de publicar contenido interno por error."
+        adr_relacionada: null
+
+    tecnologias_agregadas: []
+    deployments: []
+
+    gotchas:
+      - tipus: "workflow"
+        problema: "gitignore no permite ignorar solo en push; si un archivo esta trackeado se publica."
+        solucio: "Usar ramas separadas (dev/main) y un hook local para bloquear pushes desde dev."
+        criticitat: "media"
+
+    proximos_pasos:
+      - "Seguir el flujo dev/main para futuras publicaciones"
+      - "Verificar README y QA cuando cambie el installer"
+      - "Probar descarga desde GitHub y primer uso con testers"
+
+    notas_adicionales: |
+      README en raiz es ahora la guia publica; openkit_installer/README.md se elimino.
+      QA_OPENKIT.txt vive en openkit_installer/ para descarga directa.
+      Hook local pre-push impide publicar dev por error.
+
   - id: "2026-03-16-endurecimiento-installer-launcher-docs"
     titulo: "Endurecimiento installer/launcher y docs para testers"
     data: "2026-03-16"

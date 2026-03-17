@@ -2,7 +2,7 @@
 
 metadata:
   ultima_actualitzacio: "2026-03-16"
-  actualitzat_per: "OpenCode (Session endurecimiento installer/launcher y docs)"
+  actualitzat_per: "OpenCode (Session flujo dev/main y README publico)"
   fase: "Planificacion"
   memsys3_version: "v0.18.3"
   memsys3_deployed: "2026-03-15"
@@ -14,7 +14,7 @@ visio_general:
 
 estat_actual:
   fase: "Planificacion"
-  ultima_feature: "Endurecimiento installer/launcher y docs para testers"
+  ultima_feature: "Flujo dev/main y README publico en raiz"
   seguent_milestone: "Probar flujo con testers en Mac real y decidir empaquetado .app"
 
 features: {}
@@ -47,6 +47,21 @@ pendientes_prioritarios:
 decisions_clau: {}
 convencions_codi: {}
 historic_sessions:
+  - data: "2026-03-16"
+    duracion: "~2h"
+    objetivo: "Separar dev local de main publico y consolidar la guia en README"
+    features_implementadas:
+      - "Flujo dev/main con memsys3 en dev y publicacion limpia en main"
+      - "Hook local para bloquear push desde dev"
+      - "README de raiz como guia publica para testers"
+      - "QA_OPENKIT.txt movido a openkit_installer/"
+    problemas_resueltos:
+      - "gitignore no sirve para ignorar solo en push"
+      - "Exposicion accidental de archivos internos en GitHub"
+    decisiones_tomadas:
+      - "Publicar solo main con openkit_installer/ y README"
+      - "Mantener memsys3 y AGENTS.md en dev local"
+    notes: "Se elimino openkit_installer/README.md y se centralizo la guia en README de raiz."
   - data: "2026-03-16"
     duracion: "~2h"
     objetivo: "Reforzar seguridad/estabilidad del installer/launcher y ajustar docs para testers"
