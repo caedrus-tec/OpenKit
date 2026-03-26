@@ -1,48 +1,53 @@
-# OpenKit Instalador (macOS Sonoma)
+# OpenKit Instaladores (macOS + Windows WSL)
 
-Objetivo: instalar OpenCode y dejar un acceso directo en el Escritorio para abrir
-proyectos con doble clic y Terminal visible.
+OpenKit esta pensado para facilitar el uso de OpenCode al usuario medio (no tecnico),
+con instalacion guiada y launcher de doble clic para abrir proyectos.
 
-Este documento es la guia principal para usuarios de prueba.
+En este repositorio encontraras dos opciones, segun plataforma.
 
-## Ciclo completo (de GitHub a primer uso)
+## Estructura del repositorio
 
-1) :inbox_tray: En GitHub, abre el repositorio y descarga el ZIP con el boton verde "Code".
-2) :package: Descomprime el ZIP en tu Mac.
-3) :open_file_folder: Entra a la carpeta descargada.
-   Nota: GitHub suele cambiar el nombre de la carpeta al descomprimir el ZIP.
-4) :hammer_and_wrench: Doble clic en `OpenCode Installer.command`.
-5) :unlock: Si macOS lo bloquea, clic derecho > Abrir.
-6) :speech_balloon: Sigue los pasos en la Terminal (Homebrew, idioma, modo local o remoto, descarga de modelo si aplica).
-7) :desktop_computer: Al final veras `OpenCode Launcher.command` en el Escritorio.
-8) :rocket: Doble clic en el acceso directo `OpenCode Launcher.command`, elige una carpeta, y OpenCode se abre en esa carpeta.
+- `OpenKit_Mac/`: instalador y launcher para macOS Sonoma.
+- `OpenKit_WSL/`: instalador y launcher para Windows usando WSL.
+- `README.md`: guia general de uso.
 
-Sugerencia para tu primer mensaje en OpenCode: "Resume este proyecto y lista los archivos principales."
+## Como empezar
 
-## Si algo falla (soluciones rapidas)
+1) En GitHub, descarga el ZIP con el boton verde `Code`.
+2) Descomprime el ZIP.
+3) Entra a la carpeta descargada.
+4) Elige tu plataforma:
 
-- :warning: macOS dice "danado" o no deja abrir: abre Terminal y ejecuta `xattr -dr com.apple.quarantine "NOMBRE_DE_LA_CARPETA"`, luego reintenta.
-- :warning: macOS vuelve a bloquear: clic derecho > Abrir y confirma.
-- :warning: No aparece el selector de carpetas: revisa permisos de Automatizacion/AppleScript y reintenta.
-- :warning: Ollama no abre en modo local: abre la aplicacion Ollama manualmente y vuelve a abrir el acceso directo.
-- :warning: OpenCode no esta instalado: ejecuta de nuevo `OpenCode Installer.command`.
+### macOS (OpenKit_Mac)
 
-## Modo local (Ollama)
+1) Entra a `OpenKit_Mac/`.
+2) Doble clic en `OpenCode Installer.command`.
+3) Si macOS lo bloquea, clic derecho > Abrir.
+4) Sigue los pasos en terminal.
+5) Al final tendras `OpenCode Launcher.command` en el Escritorio.
+6) Doble clic en el launcher, elige carpeta y OpenCode iniciara.
 
-- Modelo recomendado: `qwen2.5-coder:14b`
-- Espacio del modelo: ~8-9 GB
-- Total aproximado (Ollama + OpenCode + modelo): ~9-11 GB
-- Espacio libre recomendado para descargar: ~12 GB
+### Windows + WSL (OpenKit_WSL)
 
-## Datos y configuracion (para soporte)
+1) Entra a `OpenKit_WSL/`.
+2) Ejecuta `OpenCode Installer.ps1`.
+   - Si PowerShell bloquea scripts, usa:
+     `powershell -ExecutionPolicy Bypass -File ".\OpenCode Installer.ps1"`
+3) Sigue el asistente (WSL, OpenCode, idioma y config Zen por defecto).
+4) Al final tendras `OpenCode Launcher.ps1` en el Escritorio.
+5) Ejecuta el launcher y elige una carpeta de Windows.
+6) OpenCode se abrira en WSL sobre esa misma carpeta (`/mnt/c/...`), sin copiar archivos.
 
-- Autenticacion: `~/.local/share/opencode/auth.json`
-- Configuracion principal: `~/.config/opencode/opencode.json`
-- Configuracion local (si existe principal): `~/.config/opencode/opencode.ollama.json`
-- Idioma: `~/.config/opencode/instructions-language.md`
-- Configuracion de idioma remoto: `~/.config/opencode/opencode.lang.json`
-- Preferencia instalador (sin pausa): `~/.config/opencode/installer-no-pause`
-- Acceso directo: `~/Desktop/OpenCode Launcher.command`
+## QA rapido
+
+- macOS: ver `OpenKit_Mac/QA_OPENKIT.txt`
+- Windows + WSL: ver `OpenKit_WSL/QA_OPENKIT.txt`
+
+## Soporte rapido
+
+- Si falta OpenCode: vuelve a ejecutar el installer de tu plataforma.
+- Si falla selector de carpeta: revisa permisos del sistema y reintenta.
+- Si WSL no esta inicializado: abre Ubuntu una vez, crea usuario Linux y vuelve a ejecutar installer.
 
 ---
 
