@@ -1,8 +1,8 @@
 # Project Status - OpenKit
 
 metadata:
-  ultima_actualitzacio: "2026-03-16"
-  actualitzat_per: "OpenCode (Session flujo dev/main y README publico)"
+  ultima_actualitzacio: "2026-03-18"
+  actualitzat_per: "OpenCode (Session plan Windows WSL)"
   fase: "Planificacion"
   memsys3_version: "v0.18.3"
   memsys3_deployed: "2026-03-15"
@@ -14,7 +14,7 @@ visio_general:
 
 estat_actual:
   fase: "Planificacion"
-  ultima_feature: "Flujo dev/main y README publico en raiz"
+  ultima_feature: "Manual Windows+WSL para agente"
   seguent_milestone: "Probar flujo con testers en Mac real y decidir empaquetado .app"
 
 features: {}
@@ -43,10 +43,23 @@ pendientes_prioritarios:
   - prioritat: 3
     tasca: "Definir stack frontend y backend"
     detall: "Elegir framework/version y runtime"
+  - prioritat: 4
+    tasca: "Prototipo installer/launcher Windows+WSL"
+    detall: "Implementar import/export y apertura en WSL segun OPENKIT-WINDOWS-WSL.md"
 
 decisions_clau: {}
 convencions_codi: {}
 historic_sessions:
+  - data: "2026-03-18"
+    duracion: "~1h"
+    objetivo: "Definir flujo Windows+WSL y documentar manual operativo"
+    features_implementadas:
+      - "Manual OPENKIT-WINDOWS-WSL.md con plan detallado de installer/launcher"
+      - "Flujo de import/export para trabajar en WSL y exportar resultados"
+    problemas_resueltos: []
+    decisiones_tomadas:
+      - "Proyecto vive en WSL; Windows solo para importar/exportar"
+    notes: "Pendiente implementar scripts y probar en Windows real."
   - data: "2026-03-16"
     duracion: "~2h"
     objetivo: "Separar dev local de main publico y consolidar la guia en README"

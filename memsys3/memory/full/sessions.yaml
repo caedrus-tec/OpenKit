@@ -2,6 +2,36 @@
 # Histórico de sesiones de desarrollo
 
 sessions:
+  - id: "2026-03-18-plan-openkit-windows-wsl"
+    titulo: "Plan Windows+WSL y manual operativo"
+    data: "2026-03-18"
+    duracion: "~1h"
+    peso: "bajo"
+    participantes: ["OpenCode"]
+    objetivo: "Definir flujo OpenKit para Windows con WSL y documentar manual para proximo agente."
+
+    features_implementadas:
+      - nombre: "Manual Windows+WSL para agente"
+        descripcion: "Documento OPENKIT-WINDOWS-WSL.md con plan detallado de installer, launcher, import y export."
+
+    problemas_resueltos: []
+
+    decisiones_tomadas:
+      - decision: "Priorizar estabilidad: proyecto en filesystem WSL y exportar resultados a Windows"
+        justificacion: "Evita degradacion de rendimiento y problemas de permisos en /mnt/c."
+        adr_relacionada: null
+
+    tecnologias_agregadas: []
+    deployments: []
+    gotchas: []
+
+    proximos_pasos:
+      - "Definir scripts de installer/launcher Windows (PowerShell + WSL)"
+      - "Probar flujo de import/export en Windows real"
+
+    notas_adicionales: |
+      Se creo el manual OPENKIT-WINDOWS-WSL.md con el flujo propuesto.
+
   - id: "2026-03-16-flujo-dev-main-publicacion"
     titulo: "Flujo dev/main y publicacion para testers"
     data: "2026-03-16"

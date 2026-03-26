@@ -1,14 +1,26 @@
 # Context compiled by Context Agent
 metadata:
   compilado_por: "Context Agent"
-  ultima_compilacion: "2026-03-17"
-  version_context: "v2"
+  ultima_compilacion: "2026-03-26"
+  version_context: "v3"
+
+readme_proyecto:
+  resumen: |
+    OpenKit es un instalador para macOS Sonoma que deja OpenCode CLI listo para usar
+    con un launcher de doble clic y terminal visible. El flujo publico para testers es:
+    descargar ZIP de GitHub, ejecutar OpenCode Installer.command, seguir prompts guiados,
+    y abrir proyectos con OpenCode Launcher.command desde el Escritorio.
+  puntos_clave:
+    - "Instalacion guiada de Homebrew, OpenCode y modo local opcional con Ollama"
+    - "Modelo local recomendado: qwen2.5-coder:14b (~8-9 GB)"
+    - "Ramas: dev para trabajo interno con memsys3, main para publicacion a testers"
+    - "Ruta de soporte: auth/configs en ~/.local/share/opencode y ~/.config/opencode"
 
 project:
   nombre: "OpenKit"
   descripcion: "Instalador y acceso directo para facilitar el uso de OpenCode CLI a usuarios no habituados a terminal."
   fase: "Planificacion"
-  ultima_feature: "Flujo dev/main y README publico en raiz"
+  ultima_feature: "Manual Windows+WSL para agente"
   siguiente_milestone: "Probar flujo con testers en Mac real y decidir empaquetado .app"
 
 features:
@@ -16,17 +28,27 @@ features:
     nombre: "Installer y launcher con doble click"
     url: ""
     estado: "operativo"
-    descripcion: "Scripts .command con terminal visible para instalar OpenCode y abrir proyectos con doble click."
+    descripcion: "Scripts .command con terminal visible para instalar OpenCode y abrir proyectos en carpeta elegida."
   feature_2:
     nombre: "Modo local con Ollama"
     url: ""
     estado: "operativo"
-    descripcion: "Instalacion opcional de Ollama y descarga de qwen2.5-coder:14b para uso local."
+    descripcion: "Instalacion opcional de Ollama y descarga de qwen2.5-coder:14b con config dedicada."
+  feature_3:
+    nombre: "Flujo de publicacion dev/main"
+    url: ""
+    estado: "operativo"
+    descripcion: "dev mantiene memsys3/AGENTS.md y main publica solo openkit_installer/ y README para testers."
+  feature_4:
+    nombre: "Plan Windows+WSL"
+    url: ""
+    estado: "desarrollo"
+    descripcion: "Manual operativo creado; pendiente implementar scripts PowerShell+WSL y pruebas reales."
 
 stack:
-  frontend: "Por definir"
-  backend: "Por definir"
-  database: ""
+  frontend: "No aplica (scripts Bash + docs)"
+  backend: "No aplica (CLI local)"
+  database: "No aplica"
   deploy: "Local, MVP para Sonoma"
 
 urls:
@@ -36,27 +58,30 @@ urls:
 adrs: []
 
 ultima_sesion:
-  data: "2026-03-16"
-  duracion: "~2h"
+  data: "2026-03-18"
+  duracion: "~1h"
   que_es_va_fer:
-    - "Definido flujo dev/main para publicar solo openkit_installer/ y README"
-    - "README de raiz como guia publica para testers"
-    - "QA_OPENKIT.txt movido a openkit_installer/"
-    - "Hook pre-push local para bloquear push desde dev"
-    - "Documentado el flujo de publicacion y separacion de memsys3/AGENTS.md"
+    - "Se definio el plan Windows+WSL y se documento OPENKIT-WINDOWS-WSL.md"
+    - "Se establecio flujo de import/export entre Windows y WSL"
+    - "Se fijo enfoque de estabilidad: proyecto en filesystem WSL"
   decisions:
-    - "Publicar solo main con openkit_installer/ y README"
-    - "Mantener memsys3 y AGENTS.md solo en dev"
-    - "Bloquear push desde dev con hook local"
+    - "Priorizar trabajo en WSL y usar Windows solo para importar/exportar"
   proximos_pasos:
-    - "Seguir el flujo dev/main para futuras publicaciones"
-    - "Verificar README y QA cuando cambie el installer"
-    - "Probar descarga desde GitHub y primer uso con testers"
+    - "Implementar installer y launcher Windows+WSL en PowerShell"
+    - "Probar el flujo completo en equipo Windows real"
+
+sesiones_recientes_relevantes:
+  - id: "2026-03-16-flujo-dev-main-publicacion"
+    peso: "medio"
+    highlights:
+      - "Separacion estable entre rama dev (interna) y main (publica)"
+      - "Hook pre-push local para evitar publicar contenido interno por error"
+      - "README de raiz consolidado como guia unica para testers"
 
 gotchas:
   - id: "gitignore-track"
-    problema: "Si un archivo ya esta trackeado, gitignore no evita que se publique"
-    solucio: "Usar ramas separadas (dev/main) y un hook local para bloquear push desde dev"
+    problema: "Si un archivo ya esta trackeado, gitignore no evita que se publique en remoto."
+    solucio: "Mantener ramas dev/main separadas y bloquear push desde dev con hook local."
     criticidad: "media"
 
 pendientes:
@@ -69,23 +94,26 @@ pendientes:
   - prioritat: 3
     tasca: "Definir stack frontend y backend"
     detall: "Elegir framework/version y runtime"
+  - prioritat: 4
+    tasca: "Prototipo installer/launcher Windows+WSL"
+    detall: "Implementar import/export y apertura en WSL segun OPENKIT-WINDOWS-WSL.md"
 
 notas_compilacion:
   adrs_totals: "0"
   adrs_incluidas: "0"
-  sesiones_totales: "4"
-  sesiones_incluidas: "1"
+  sesiones_totales: "5"
+  sesiones_incluidas: "2"
   sesiones_por_peso:
     alto: "0"
     medio: "1"
-    bajo: "0"
+    bajo: "1"
   pesos_ajustados: "ninguno"
   backlog_existe: "false"
   backlog_items_totales: "0"
   backlog_items_incluidos: "0"
-  justificacion_backlog: "No existe memsys3/backlog/README.md"
-  tokens_iniciales: "4395"
-  tokens_finales: "746"
-  archivamiento: "no"
-  criterioos_filtraje: "Sintesis de la sesion mas reciente (peso medio), gotcha relevante y foco en flujo dev/main"
-  lineas_totales: "91"
+  justificacion_backlog: "No existe memsys3/backlog/README.md, se omite seccion backlog."
+  tokens_iniciales: "~4821"
+  tokens_finales: "~1131"
+  archivamiento: "no aplica (contexto por debajo del umbral de 150K tokens)"
+  criterioos_filtraje: "Se priorizo recencia y peso: sesion baja mas reciente (resumen agresivo) + sesion media estructural dev/main; se excluyeron detalles cosmeticos y repetitivos."
+  lineas_totales: "119"
