@@ -1,8 +1,8 @@
 # Project Status - OpenKit
 
 metadata:
-  ultima_actualitzacio: "2026-03-18"
-  actualitzat_per: "OpenCode (Session plan Windows WSL)"
+  ultima_actualitzacio: "2026-03-26"
+  actualitzat_per: "OpenCode (Session split Mac+WSL y publicacion main)"
   fase: "Planificacion"
   memsys3_version: "v0.18.3"
   memsys3_deployed: "2026-03-15"
@@ -14,8 +14,8 @@ visio_general:
 
 estat_actual:
   fase: "Planificacion"
-  ultima_feature: "Manual Windows+WSL para agente"
-  seguent_milestone: "Probar flujo con testers en Mac real y decidir empaquetado .app"
+  ultima_feature: "OpenKit_Mac + OpenKit_WSL publicados en main con README multiplataforma"
+  seguent_milestone: "Recoger feedback de testers y ajustar installer/launcher en ambas plataformas"
 
 features: {}
 
@@ -35,21 +35,36 @@ urls:
 
 pendientes_prioritarios:
   - prioritat: 1
+    tasca: "Recoger feedback estructurado de testers"
+    detall: "Consolidar incidencias de OpenKit_Mac y OpenKit_WSL (UX, errores, fricciones)."
+  - prioritat: 2
+    tasca: "Probar installer/launcher en Windows real"
+    detall: "Validar flujo completo WSL + OpenCode + launcher sobre carpetas C:\\ sin duplicado."
+  - prioritat: 3
     tasca: "Probar instalador y launcher en Mac M3 real"
     detall: "Validar UX con QA_OPENKIT.txt actualizado, permisos y arranque de OpenCode"
-  - prioritat: 2
-    tasca: "Definir idioma para UI y codigo"
-    detall: "Alinear lenguaje con usuarios objetivo"
-  - prioritat: 3
-    tasca: "Definir stack frontend y backend"
-    detall: "Elegir framework/version y runtime"
   - prioritat: 4
-    tasca: "Prototipo installer/launcher Windows+WSL"
-    detall: "Implementar import/export y apertura en WSL segun OPENKIT-WINDOWS-WSL.md"
+    tasca: "Aplicar mejoras segun feedback"
+    detall: "Ajustar mensajes, defaults y manejo de errores en scripts de ambas plataformas."
 
 decisions_clau: {}
 convencions_codi: {}
 historic_sessions:
+  - data: "2026-03-26"
+    duracion: "~3h"
+    objetivo: "Separar paquete Mac/WSL, implementar scripts Windows y publicar main"
+    features_implementadas:
+      - "Renombre openkit_installer -> OpenKit_Mac y creacion de OpenKit_WSL"
+      - "Nuevo OpenCode Installer.ps1 y OpenCode Launcher.ps1 para Windows+WSL"
+      - "QA_OPENKIT.txt para WSL y README de raiz actualizado a enfoque multiplataforma"
+      - "Publicacion en main y retorno a dev"
+    problemas_resueltos:
+      - "Aclarada viabilidad de trabajar sobre carpetas Windows desde WSL sin copiar archivos"
+      - "Estructura del repo simplificada para usuarios de Mac y Windows"
+    decisiones_tomadas:
+      - "Mantener OpenKit_Mac y OpenKit_WSL como rutas oficiales"
+      - "Usar opencode/minimax-m2.5 como default en flujo WSL"
+    notes: "Sesion cerrada a la espera de feedback de testers."
   - data: "2026-03-18"
     duracion: "~1h"
     objetivo: "Definir flujo Windows+WSL y documentar manual operativo"

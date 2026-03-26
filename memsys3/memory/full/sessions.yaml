@@ -2,6 +2,66 @@
 # Histórico de sesiones de desarrollo
 
 sessions:
+  - id: "2026-03-26-openkit-mac-wsl-installers"
+    titulo: "Split multiplataforma y publicacion main con Mac+WSL"
+    data: "2026-03-26"
+    duracion: "~3h"
+    peso: "medio"
+    participantes: ["OpenCode"]
+    objetivo: "Separar instaladores por plataforma, implementar flujo Windows+WSL y publicar main listo para testers."
+
+    features_implementadas:
+      - nombre: "Analisis tecnico de OpenCode sobre carpetas Windows en WSL"
+        descripcion: "Se valido que OpenCode puede trabajar directo sobre /mnt/c sin forzar import/export ni duplicado de archivos."
+      - nombre: "Reorganizacion del repo por plataforma"
+        descripcion: "openkit_installer/ se renombro a OpenKit_Mac/ y se creo OpenKit_WSL/ para scripts Windows."
+      - nombre: "Installer Windows+WSL guiado"
+        descripcion: "Nuevo OpenCode Installer.ps1 con deteccion/instalacion WSL, instalacion OpenCode, idioma, login y config por defecto Zen minimax-m2.5."
+      - nombre: "Launcher Windows+WSL sobre carpetas de Windows"
+        descripcion: "Nuevo OpenCode Launcher.ps1 con selector de carpeta, conversion C:\\... -> /mnt/c/... y arranque de OpenCode en WSL sin copiar archivos."
+      - nombre: "QA y README multiplataforma"
+        descripcion: "Nuevo OpenKit_WSL/QA_OPENKIT.txt y README de raiz actualizado para usuarios no tecnicos con rutas Mac y Windows."
+      - nombre: "Publicacion en main y retorno a dev"
+        descripcion: "Commit y push en main con estructura OpenKit_Mac + OpenKit_WSL + README; luego cambio de rama de vuelta a dev."
+
+    problemas_resueltos:
+      - problema: "Duda sobre si WSL obligaba a migrar proyectos al filesystem Linux"
+        solucion: "Se confirmo compatibilidad de OpenCode con rutas Windows montadas (/mnt/c) y se diseno launcher directo sobre carpetas Windows."
+      - problema: "Confusion de estructura al convivir instaladores Mac y Windows"
+        solucion: "Separacion explicita en carpetas OpenKit_Mac/ y OpenKit_WSL/ con README unificado."
+
+    decisiones_tomadas:
+      - decision: "Mantener dos paquetes separados por plataforma en el repo publico"
+        justificacion: "Reduce friccion para testers y evita mezclar instrucciones entre macOS y Windows."
+        adr_relacionada: null
+      - decision: "Configurar Windows+WSL con OpenCode Zen minimax-m2.5 como default"
+        justificacion: "Sustituye dependencia de modelo local pesado y simplifica onboarding para usuario medio."
+        adr_relacionada: null
+      - decision: "Preservar workflow sin duplicado de archivos entre Windows y WSL"
+        justificacion: "El launcher opera sobre la misma carpeta Windows para evitar migraciones innecesarias."
+        adr_relacionada: null
+
+    tecnologias_agregadas: []
+    deployments:
+      - servei: "GitHub main"
+        url: "https://github.com/caedrus-tec/OpenKit"
+
+    gotchas:
+      - tipus: "workflow"
+        problema: "PowerShell puede bloquear scripts con 'running scripts is disabled'."
+        solucio: "Ejecutar installer con powershell -ExecutionPolicy Bypass -File '.\\OpenCode Installer.ps1'."
+        criticitat: "media"
+
+    proximos_pasos:
+      - "Esperar feedback de testers de Mac y Windows+WSL"
+      - "Ejecutar smoke tests en hardware Windows real y ajustar mensajes/errores"
+      - "Aplicar mejoras de UX segun incidencias reportadas"
+
+    notas_adicionales: |
+      Commit publicado en main: 1adb4d6.
+      Se incluyo OpenKit_WSL/OpenCode Installer.ps1, OpenKit_WSL/OpenCode Launcher.ps1 y OpenKit_WSL/QA_OPENKIT.txt.
+      Sesion cerrada en dev a la espera de feedback de testers.
+
   - id: "2026-03-18-plan-openkit-windows-wsl"
     titulo: "Plan Windows+WSL y manual operativo"
     data: "2026-03-18"
