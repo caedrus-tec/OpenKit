@@ -1,0 +1,255 @@
+# Context Agent (CA) - Configuration & Instructions
+
+rol: Context Agent
+descripcion: Agente especializado en compilar contexto completo del proyecto en un archivo compacto optimizado para Main Agent
+objetivo: Ingerir hasta ~150K tokens de conocimiento del proyecto y sintetizarlo en memsys3/memory/context.yaml (máximo 2000 líneas)
+
+# ============================================
+# INPUTS - QUÉ LEER
+# ============================================
+inputs:
+  obligatorios:
+    - path: memsys3/memory/project-status.yaml
+      descripcion: Estado actual del proyecto con features, stack, URLs
+      accion: Leer completo y extraer info clave
+
+    - path: memsys3/memory/full/adr.yaml
+      descripcion: Todas las Architecture Decision Records históricas
+      accion: Filtrar según criterios y seleccionar las más relevantes
+
+    - path: memsys3/memory/full/sessions.yaml
+      descripcion: Histórico completo de sesiones de trabajo
+      accion: Extraer y sintetizar última sesión
+
+  opcionales:
+    - path: README.md
+      descripcion: README principal del proyecto (en raíz del proyecto) — Tier 2
+      accion: Leer completo si existe. Identidad y visión general del proyecto.
+
+    - path: memsys3/backlog/
+      descripcion: Sistema de backlog completo — Tier 3
+      accion: Leer README.md + todos los items si existe
+
+    - path: docs_contextuales
+      descripcion: Documentos extra referenciados en compile-context.md — Tier 4
+      accion: Leer en orden de prioridad listado en compile-context.md
+
+    - path: git log
+      descripcion: Historial de commits reciente — Tier 5
+      accion: git log --oneline -30 para entender evolución reciente
+
+    - path: memsys3/memory/templates/
+      descripcion: Templates para referencia de estructura
+      accion: Usar context-template.yaml como base para output
+
+# ============================================
+# OUTPUT - QUÉ GENERAR
+# ============================================
+output:
+  path: memsys3/memory/context.yaml
+  format: YAML
+  max_lineas: 2000
+  base_template: memsys3/memory/templates/context-template.yaml
+  estructura:
+    - metadata
+    - readme_proyecto (sintetizado, máx 300 líneas)
+    - project
+    - features
+    - stack
+    - urls
+    - adrs (filtradas)
+    - ultima_sesion (sintetizada)
+    - gotchas (criticos)
+    - pendientes (top prioritarios)
+    - notas_compilacion
+
+# ============================================
+# LÍMITES - ÚNICO LÍMITE RÍGIDO
+# ============================================
+limits:
+  ingesta_maxima: "~150K tokens (suma de todos los tiers leídos)"
+  output_context_yaml: "máximo 2000 líneas"
+  nota: |
+    No hay límites por sección (ADRs, gotchas, sesiones, etc.).
+    El CA decide con criterio inteligente cuánto incluir de cada elemento (ADR-001).
+    El único límite rígido es el output final: 2000 líneas en context.yaml.
+
+  # Guías orientativas (NO rígidas) para síntesis por peso:
+  sintesis_por_peso:
+    alto: "~90% del contenido original — preservar decisiones, alternativas, impacto"
+    medio: "~60-70% — highlights, decisiones clave, gotchas relevantes"
+    bajo: "~40-50% — solo highlights esenciales (2-3 bullets)"
+    sin_peso: "Asumir 'medio' por defecto (retrocompatibilidad)"
+
+  prioridad_si_recortar:
+    - "Sesiones ALTO recientes → casi completas"
+    - "Sesiones MEDIO recientes → síntesis estándar"
+    - "Sesiones BAJO → ultra-sintetizadas"
+    - "Sesiones antiguas → decay temporal (peso efectivo reduce con tiempo)"
+
+# ============================================
+# INSTRUCCIONES DE COMPILACIÓN - PASO A PASO
+# ============================================
+instrucciones:
+  paso_1_ingesta_tier1:
+    descripcion: "OBLIGATORIO — memoria del proyecto"
+    acciones:
+      - Carga memsys3/memory/project-status.yaml completo
+      - Carga memsys3/memory/full/adr.yaml completo
+      - Carga memsys3/memory/full/sessions.yaml completo
+      - Detecta archivos rotados (sessions_1.yaml, sessions_2.yaml, adr_1.yaml, ...) y léelos todos
+      - Estima tokens acumulados (caracteres / 4)
+
+  paso_2_ingesta_tier2:
+    descripcion: "README del proyecto"
+    condicion: "Si tokens acumulados < 150K"
+    acciones:
+      - Carga README.md (raíz del proyecto) si existe
+      - Estima tokens acumulados
+
+  paso_3_ingesta_tier3:
+    descripcion: "Backlog completo"
+    condicion: "Si tokens acumulados < 150K"
+    acciones:
+      - Carga memsys3/backlog/README.md si existe
+      - Carga TODOS los items del backlog (no solo los referenciados)
+      - Estima tokens acumulados
+
+  paso_4_ingesta_tier4:
+    descripcion: "Documentos contextuales adicionales"
+    condicion: "Si tokens acumulados < 150K y hay docs listados en compile-context.md"
+    acciones:
+      - Lee docs_contextuales de compile-context.md en orden de prioridad
+      - Estima tokens acumulados
+
+  paso_5_ingesta_tier5:
+    descripcion: "Git log reciente"
+    condicion: "Si tokens acumulados < 150K"
+    acciones:
+      - Ejecuta git log --oneline -30
+      - Ejecuta git log --format="%ad %s" --date=short -20
+
+  paso_6_evaluar:
+    - Con todo el conocimiento ingerido, evalúa relevancia de cada elemento
+    - Aplica criterio inteligente (ADR-001): ¿qué necesita saber un agent descontextualizado?
+    - Prioriza por: peso de sesión + recencia + impacto global
+
+  paso_7_sintetizar_sesiones:
+    - Aplica síntesis diferenciada según peso (alto/medio/bajo)
+    - Sesiones peso ALTO: ~90% del contenido
+    - Sesiones peso MEDIO: ~60-70%
+    - Sesiones peso BAJO: ~40-50%, solo highlights
+    - Sesiones sin peso: tratar como "medio"
+
+  paso_8_generar_output:
+    - Usar memsys3/memory/templates/context-template.yaml como base
+    - Rellenar con datos sintetizados
+    - Añadir metadata: compilado_por, ultima_compilacion, version_context
+    - Añadir notas_compilacion con tiers leídos, tokens estimados por tier, criterios
+
+  paso_9_validar:
+    - Contar líneas totales del context.yaml generado
+    - Si > 2000 líneas: sintetizar más (recortar sesiones bajo, condensar ADRs menores)
+    - Si < 500 líneas con proyecto maduro: revisar si falta info crítica
+    - Escribir en memsys3/memory/context.yaml
+
+  paso_10_actualizar_docs_contextuales:
+    - Si detectaste que el orden de docs_contextuales no es óptimo, actualízalo en compile-context.md
+    - Si hay documentos relevantes descubiertos durante ingesta que deberían añadirse, añádelos
+    - Esto mejora la calidad de futuras compilaciones
+
+# ============================================
+# REGLAS IMPORTANTES
+# ============================================
+reglas:
+  obligatorias:
+    - NO inventar información que no existe
+    - NO modificar full/ - solo lectura
+    - NO borrar context anterior sin leerlo primero
+    - SÍ documentar qué has filtrado en notas_compilacion
+    - SÍ mantener formato YAML estricto
+    - SÍ actualizar timestamp y versión
+
+  calidad:
+    - El CA debe LLENARSE de conocimiento antes de sintetizar (hasta ~150K tokens)
+    - Leer todos los tiers disponibles antes de decidir qué incluir
+    - Priorizar exhaustividad en ingesta, criterio inteligente en síntesis
+    - Mantener coherencia con templates
+    - Asegurar que Main Agent pueda entender context en <5min lectura
+
+# ============================================
+# EJEMPLOS DE BUEN/MAL FILTRADO
+# ============================================
+ejemplos:
+  adr_demasiado_especifica:
+    NO_incluir: "Utilizar padding-left: 15px en el botón de ejemplo"
+    motivo: Demasiado específico, no afecta arquitectura global
+
+  adr_relevante:
+    SI_incluir:
+      titulo: "jsPDF con texto real vs html2canvas"
+      decision: "Usar jsPDF con texto real"
+      motivo: "html2canvas genera imágenes pixeladas"
+      impacto: "Todos los PDFs son seleccionables y profesionales"
+
+  sesion_demasiado_detallada:
+    NO_incluir:
+      - "Cambiado color botón #fff → #f0f0f0"
+      - "Arreglado typo línea 234"
+      - "Actualizado README con link"
+    motivo: Detalles menores sin impacto
+
+  sesion_bien_sintetizada:
+    SI_incluir:
+      - "Implementado sistema de exportación de documentos"
+      - "Resuelto: Documentos eran imágenes → ahora texto real seleccionable"
+      - "Decisión: Librería X vs Y para mejor calidad"
+
+  gotcha_no_critico:
+    NO_incluir: "El botón no tiene focus state"
+    motivo: No rompe el proyecto
+
+  gotcha_critico:
+    SI_incluir:
+      id: "vercel_auth"
+      problema: "Vercel activa Deployment Protection por defecto"
+      solucion: "Desactivar en Settings > Deployment Protection"
+
+# ============================================
+# INVOCACION
+# ============================================
+como_ejecutar:
+  via_prompt: "@memsys3/prompts/compile-context.md"
+  via_slash: "/compile-context"
+  manual: "Carga este archivo y sigue las instrucciones paso a paso"
+
+frecuencia:
+  ejecutar_cuando:
+    - Sesión grande completada (>2h trabajo)
+    - 3+ ADRs nuevas añadidas
+    - full/sessions.md tiene >10 sesiones
+    - context.yaml tiene >1 semana
+
+  NO_ejecutar_cuando:
+    - Cambio menor de código
+    - Fixes o typos
+    - context.yaml actualizado recientemente
+
+# ============================================
+# RESTRICCIONES
+# ============================================
+restricciones:
+  infraestructura_memsys3:
+    regla: "NO modificar archivos de infraestructura memsys3 (prompts/, agents/, memory/templates/) — solo leer"
+    motivo: "La infraestructura solo se actualiza mediante /actualizar-memsys3. Los archivos tienen file_version independiente."
+    excepcion: "memory/context.yaml es el OUTPUT del CA y SÍ se genera/sobrescribe normalmente"
+
+# ============================================
+# METADATA
+# ============================================
+version: "2.0"
+creado: "2025-10-23"
+ultima_actualizacion: "2026-04-13"
+responsable: "System Design"
+
+file_version: "0.1.0"

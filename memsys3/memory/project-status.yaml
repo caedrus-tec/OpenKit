@@ -1,0 +1,139 @@
+# Project Status - OpenKit
+
+metadata:
+  ultima_actualitzacio: "2026-03-26"
+  actualitzat_per: "OpenCode (Session split Mac+WSL y publicacion main)"
+  fase: "Planificacion"
+  memsys3_version: "v0.21.0"
+  memsys3_deployed: "2026-04-20"
+
+visio_general:
+  que_es: "Instalador y acceso directo para facilitar el uso de OpenCode CLI a usuarios no habituados a terminal."
+  objectiu: "Habilitar una experiencia simple de instalacion y uso de OpenCode CLI para publico no tecnico."
+  client: "Por definir"
+
+estat_actual:
+  fase: "Planificacion"
+  ultima_feature: "OpenKit_Mac + OpenKit_WSL publicados en main con README multiplataforma"
+  seguent_milestone: "Recoger feedback de testers y ajustar installer/launcher en ambas plataformas"
+
+features: {}
+
+stack_tecnologic:
+  frontend:
+    framework: "Por definir"
+
+  backend:
+    tecnologia: "Por definir"
+
+  deploy:
+    platform: "Local, MVP para Sonoma"
+
+urls:
+  # production: "[URL_SI_EXISTE]"
+  # staging: "[URL_SI_EXISTE]"
+
+pendientes_prioritarios:
+  - prioritat: 1
+    tasca: "Recoger feedback estructurado de testers"
+    detall: "Consolidar incidencias de OpenKit_Mac y OpenKit_WSL (UX, errores, fricciones)."
+  - prioritat: 2
+    tasca: "Probar installer/launcher en Windows real"
+    detall: "Validar flujo completo WSL + OpenCode + launcher sobre carpetas C:\\ sin duplicado."
+  - prioritat: 3
+    tasca: "Probar instalador y launcher en Mac M3 real"
+    detall: "Validar UX con QA_OPENKIT.txt actualizado, permisos y arranque de OpenCode"
+  - prioritat: 4
+    tasca: "Aplicar mejoras segun feedback"
+    detall: "Ajustar mensajes, defaults y manejo de errores en scripts de ambas plataformas."
+
+decisions_clau: {}
+convencions_codi: {}
+historic_sessions:
+  - data: "2026-03-26"
+    duracion: "~3h"
+    objetivo: "Separar paquete Mac/WSL, implementar scripts Windows y publicar main"
+    features_implementadas:
+      - "Renombre openkit_installer -> OpenKit_Mac y creacion de OpenKit_WSL"
+      - "Nuevo OpenCode Installer.ps1 y OpenCode Launcher.ps1 para Windows+WSL"
+      - "QA_OPENKIT.txt para WSL y README de raiz actualizado a enfoque multiplataforma"
+      - "Publicacion en main y retorno a dev"
+    problemas_resueltos:
+      - "Aclarada viabilidad de trabajar sobre carpetas Windows desde WSL sin copiar archivos"
+      - "Estructura del repo simplificada para usuarios de Mac y Windows"
+    decisiones_tomadas:
+      - "Mantener OpenKit_Mac y OpenKit_WSL como rutas oficiales"
+      - "Usar opencode/minimax-m2.5 como default en flujo WSL"
+    notes: "Sesion cerrada a la espera de feedback de testers."
+  - data: "2026-03-18"
+    duracion: "~1h"
+    objetivo: "Definir flujo Windows+WSL y documentar manual operativo"
+    features_implementadas:
+      - "Manual OPENKIT-WINDOWS-WSL.md con plan detallado de installer/launcher"
+      - "Flujo de import/export para trabajar en WSL y exportar resultados"
+    problemas_resueltos: []
+    decisiones_tomadas:
+      - "Proyecto vive en WSL; Windows solo para importar/exportar"
+    notes: "Pendiente implementar scripts y probar en Windows real."
+  - data: "2026-03-16"
+    duracion: "~2h"
+    objetivo: "Separar dev local de main publico y consolidar la guia en README"
+    features_implementadas:
+      - "Flujo dev/main con memsys3 en dev y publicacion limpia en main"
+      - "Hook local para bloquear push desde dev"
+      - "README de raiz como guia publica para testers"
+      - "QA_OPENKIT.txt movido a openkit_installer/"
+    problemas_resueltos:
+      - "gitignore no sirve para ignorar solo en push"
+      - "Exposicion accidental de archivos internos en GitHub"
+    decisiones_tomadas:
+      - "Publicar solo main con openkit_installer/ y README"
+      - "Mantener memsys3 y AGENTS.md en dev local"
+    notes: "Se elimino openkit_installer/README.md y se centralizo la guia en README de raiz."
+  - data: "2026-03-16"
+    duracion: "~2h"
+    objetivo: "Reforzar seguridad/estabilidad del installer/launcher y ajustar docs para testers"
+    features_implementadas:
+      - "Aviso de seguridad y descarga segura del installer de Homebrew"
+      - "Validaciones de archivos y mensajes de error en configs/launcher"
+      - "Chequeo de espacio con fallback si df falla"
+      - "Launcher con errores claros y validacion de carpeta"
+      - "README y QA simplificados para testers"
+    problemas_resueltos:
+      - "Ejecucion de script remoto sin aviso explicito"
+      - "Fallos silenciosos al escribir configs o copiar launcher"
+      - "Cancelacion vs error en selector de carpetas"
+    decisiones_tomadas:
+      - "Priorizar abortos seguros y mensajes claros en pasos sensibles"
+      - "Mantener avisos no fatales para Ollama/Finder"
+    notes: "Se regenero OpenKit-para-testers.zip con installer, launcher y docs."
+  - data: "2026-03-16"
+    duracion: "~2h"
+    objetivo: "Mejorar UX del installer y preparar QA para testers"
+    features_implementadas:
+      - "Confirmaciones y mensajes claros en pasos criticos"
+      - "Reconfiguracion de idioma y menu de login remoto"
+      - "Validacion de auth.json y chequeo de espacio en volumen de modelos"
+      - "Proteccion de sobrescrituras y QA_OPENKIT.txt"
+    problemas_resueltos:
+      - "Acciones pesadas sin confirmacion clara"
+      - "Auth.json invalido podia bloquear modo local"
+      - "Sobrescrituras silenciosas de launcher y config"
+    decisiones_tomadas:
+      - "UX rapida con prompts cortos y defaults seguros"
+      - "Preferencia installer-no-pause para futuras ejecuciones"
+    notes: "Se actualizaron README.md y openkit_installer/README.md con los nuevos pasos."
+  - data: "2026-03-15"
+    duracion: "~2h"
+    objetivo: "Definir e implementar flujo de instalacion y launcher en macOS"
+    features_implementadas:
+      - "Installer/Launcher con doble click y terminal visible"
+      - "Modo local con Ollama y modelo qwen2.5-coder:14b"
+      - "Preferencia de idioma persistente"
+    problemas_resueltos:
+      - "Evitar sobrescribir configuraciones existentes"
+      - "Asegurar PATH de brew/opencode en scripts GUI"
+    decisiones_tomadas:
+      - "Mantener .command en lugar de .app firmado"
+      - "Usar qwen2.5-coder:14b como modelo local por defecto"
+    notes: "Flujo listo para pruebas en Mac real; falta decidir empaquetado .app."

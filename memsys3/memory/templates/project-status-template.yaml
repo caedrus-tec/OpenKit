@@ -1,0 +1,151 @@
+# version: 0.1.0
+# Project Status Template
+# Template agnóstico para documentar el estado de cualquier proyecto
+# Copia este archivo y rellena los campos marcados con [RELLENAR]
+
+metadata:
+  ultima_actualizacion: "[FECHA]"  # Ejemplo: 2025-10-23
+  actualizado_por: "[NOMBRE]"  # Quién ha hecho la última actualización
+  fase: "[FASE]"  # Ejemplos: Planificación, MVP, Beta, Producción, Mantenimiento
+  memsys3_version: "[VERSION]"  # Versión de memsys3 desplegada (se rellena durante deployment)
+  memsys3_deployed: "[FECHA]"  # Fecha de deployment de memsys3 (se rellena durante deployment)
+
+vision_general:
+  que_es: "[DESCRIPCION 1 LINEA]"  # Qué hace el proyecto en una frase
+  objetivo: "[OBJETIVO PRINCIPAL]"  # Qué quiere conseguir
+  cliente: "[CLIENTE/STAKEHOLDER]"  # Opcional, si aplica
+
+estado_actual:
+  fase: "[FASE ACTUAL]"  # Dónde está el proyecto ahora
+  ultima_feature: "[ÚLTIMA FEATURE IMPLEMENTADA]"  # Qué se ha hecho recientemente
+  siguiente_milestone: "[PROXIMO OBJETIVO]"  # Hacia dónde vamos
+
+# Define aquí cada feature/módulo del proyecto
+# Puedes añadir tantas features como necesites siguiendo este esquema:
+features:
+  feature_ejemplo_1:  # ID único de la feature (kebab-case)
+    nombre: "[NOMBRE FEATURE]"  # Nombre visual de la feature
+    url: "[URL]"  # URL de producción o staging, si aplica
+    estado: "[operativo|desarrollo|pendiente|obsoleto]"
+    descripcion: "[DESCRIPCION BREVE]"  # Qué hace esta feature
+    funcionalidades:  # Lista de capacidades principales
+      - "[FUNCIONALIDAD 1]"
+      - "[FUNCIONALIDAD 2]"
+    notas: "[NOTAS ADICIONALES]"  # Opcional
+
+  feature_ejemplo_2:
+    nombre: "[NOMBRE FEATURE]"
+    url: "[URL]"
+    estado: "[ESTADO]"
+    descripcion: "[DESCRIPCION]"
+    funcionalidades:
+      - "[FUNCIONALIDAD 1]"
+
+  # Añade más features aquí siguiendo el mismo patrón
+
+stack_tecnologico:
+  frontend:
+    framework: "[FRAMEWORK + VERSION]"  # Ejemplos: React 18, Vue 3, Astro 5, Next.js 14
+    tipo: "[TIPO]"  # Ejemplos: SPA, SSG, SSR, MPA
+    styling: "[SISTEMA CSS]"  # Ejemplos: Tailwind, Styled Components, CSS Modules
+    patrones: "[PATRONES PRINCIPALES]"  # Opcional: patrones de arquitectura utilizados
+
+  backend:  # Opcional si no hay backend
+    runtime: "[RUNTIME]"  # Ejemplos: Node.js, Python, Go, .NET
+    framework: "[FRAMEWORK]"  # Ejemplos: Express, FastAPI, Gin, ASP.NET
+    database: "[DATABASE]"  # Opcional: PostgreSQL, MongoDB, etc.
+    auth: "[SISTEMA AUTH]"  # Opcional: JWT, OAuth, etc.
+
+  librerias_clave:  # Opcional: librerías importantes a destacar
+    - nombre: "[NOMBRE LIBRERIA]"
+      uso: "[PARA QUE SE USA]"
+
+  deploy:
+    platform: "[PLATFORM]"  # Ejemplos: Vercel, Netlify, AWS, Railway
+    ci_cd: "[PIPELINE]"  # Cómo se despliega
+    env_vars:  # Variables de entorno críticas (¡sin valores!)
+      - "[VAR_NAME_1]"
+      - "[VAR_NAME_2]"
+
+# URLs principales del proyecto
+urls:
+  produccion: "[URL_PRODUCCION]"  # URL principal
+  staging: "[URL_STAGING]"  # Opcional
+  # Añade más URLs según necesidad
+
+# Tareas pendientes ordenadas por prioridad
+pendientes_prioritarios:
+  - prioridad: 1
+    tarea: "[TAREA MAS IMPORTANTE]"
+    detalle: "[DETALLES O CONTEXTO]"  # Opcional
+
+  - prioridad: 2
+    tarea: "[SEGUNDA TAREA]"
+    detalle: "[DETALLES]"
+
+  # Añade más tareas según necesidad
+  # Mantén siempre las top 5-7 más importantes
+
+# Decisiones técnicas importantes que hay que recordar
+# Documenta el "por qué" de decisiones no obvias
+decisiones_clave:
+  decision_ejemplo_1:  # ID de la decisión
+    decision: "[QUE SE DECIDIO]"  # La decisión tomada
+    motivo: "[POR QUE]"  # Razonamiento detrás de la decisión
+    alternativas_consideradas: "[ALTERNATIVAS]"  # Opcional
+    impacto: "[IMPACTO EN EL PROYECTO]"  # Opcional
+
+  decision_ejemplo_2:
+    decision: "[DECISION]"
+    motivo: "[MOTIVO]"
+
+  # Añade más decisiones importantes aquí
+
+# NOTA: gotchas y warnings NO fueron aquí
+# Los gotchas se documentan en memory/full/sessions.yaml (campo 'gotchas:')
+# Context Agent los extraerá de todas las sesiones y seleccionará los top 5 más críticos
+# Ver memory/templates/sessions-template.yaml para detalles
+
+# Convenciones de código del proyecto
+convenciones_codigo:
+  idioma:
+    interfaz: "[IDIOMA UI]"  # Catalán, Español, Inglés, etc.
+    variables: "[IDIOMA VARIABLES]"  # Mismo o diferente
+    comentarios: "[IDIOMA COMENTARIOS]"
+
+  naming:
+    "[lenguaje_1]": "[CONVENCION]"  # Ejemplo: javascript: camelCase
+    "[lenguaje_2]": "[CONVENCION]"  # Ejemplo: python: snake_case
+
+  estructura:  # Reglas de organización de código
+    - "[REGLA 1]"
+    - "[REGLA 2]"
+
+# Comandos útiles para trabajar con el proyecto
+comandos_utiles:
+  install: "[COMANDO INSTALL]"  # Ejemplo: npm install, pip install -r requirements.txt
+  dev: "[COMANDO DEV]"  # Ejemplo: npm run dev, python manage.py runserver
+  build: "[COMANDO BUILD]"  # Ejemplo: npm run build
+  deploy: "[COMANDO DEPLOY]"  # Ejemplo: npx vercel --prod
+  test: "[COMANDO TEST]"  # Ejemplo: npm test, pytest
+  lint: "[COMANDO LINT]"  # Ejemplo: npm run lint
+  # Añade más comandos según necesidad
+
+# Histórico de sesiones/sprints importantes
+# Añade una entrada para cada sesión de trabajo significativa
+historico_sesiones:
+  - fecha: "[YYYY-MM-DD]"
+    duracion: "[DURACION]"  # Opcional: 2h, 1 día, etc.
+    objetivo: "[OBJETIVO SESION]"  # Qué se quería conseguir
+    features_implementadas:
+      - "[FEATURE 1]"
+      - "[FEATURE 2]"
+    problemas_resueltos:
+      - "[PROBLEMA 1]"
+      - "[PROBLEMA 2]"
+    decisiones_tomadas:
+      - "[DECISION 1]"
+      - "[DECISION 2]"
+    notas: "[NOTAS ADICIONALES]"  # Opcional
+
+  # Añade más sesiones aquí manteniendo las más recientes al principio
