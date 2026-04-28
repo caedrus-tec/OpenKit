@@ -1,21 +1,21 @@
 # AGENTS.md
 
 ## Purpose
-OpenKit provides a macOS installer and launcher for OpenCode CLI.
+OpenKit provides installers and launchers for OpenCode CLI on macOS and Windows WSL.
 Use this file as the operating manual for agentic work in this repo.
 
 ## Repo layout
 - `openkit_installer/` holds the user-facing macOS scripts.
 - `openkit_installer/OpenCode Installer.command` installs OpenCode and guides setup.
 - `openkit_installer/OpenCode Launcher.command` opens a folder and runs OpenCode in it.
-- `memsys3/` is the memory system for agent context (tracked only on dev).
-- `README.md` is the public tester guide (mirrors installer flow).
+- `OpenKit_WSL/` holds the Windows + WSL installer artifacts.
+- `memsys3/` is the memory system for agent context.
+- `README.md` is the public tester guide.
 
-## Branch workflow (dev/main)
-- `dev` is the local working branch with `memsys3/` and `AGENTS.md` tracked.
-- `main` is the public GitHub branch for testers; it should contain only `openkit_installer/` and `README.md`.
-- Release flow: switch to `main`, restore `openkit_installer/` and `README.md` from `dev`, then commit and push.
-- A local pre-push hook blocks pushes from `dev` to avoid accidental publish.
+## Branch workflow
+- `main` is the single source of truth locally and on GitHub.
+- Keep local and remote `main` aligned; do not maintain a separate publish branch.
+- If a change affects user flows, update scripts and docs in the same branch.
 
 ## Build / lint / test commands
 There is no formal build system, linter, or test runner configured.
@@ -33,9 +33,16 @@ Manual smoke checks (macOS):
 - Double-click launcher; verify Finder opens and OpenCode runs in chosen folder.
 - Optional: verify remote auth flow opens provider pages and `opencode auth login` works.
 
+Manual smoke checks (Windows + WSL):
+- Run `OpenKit_WSL/OpenCode Installer.ps1` in PowerShell.
+- Verify WSL bootstrap, OpenCode install, and desktop launcher creation.
+- Run `OpenKit_WSL/OpenCode Launcher.ps1` and verify folder mapping into `/mnt/c/...`.
+
 ## Runtime entry points
 - Installer: `openkit_installer/OpenCode Installer.command`
 - Launcher: `openkit_installer/OpenCode Launcher.command`
+- Windows installer: `OpenKit_WSL/OpenCode Installer.ps1`
+- Windows launcher: `OpenKit_WSL/OpenCode Launcher.ps1`
 
 ## UX goals (non-negotiable)
 - Terminal visible at all times.
@@ -131,7 +138,7 @@ Manual smoke checks (macOS):
 - Keep prompts short and default to the safest option.
 
 ## Documentation updates
-- Keep `openkit_installer/README.md` aligned with script behavior.
+- Keep `README.md` aligned with script behavior.
 - If prompts or config paths change, update README in the same change.
 - Note UX changes in memsys3 if they impact workflows.
 

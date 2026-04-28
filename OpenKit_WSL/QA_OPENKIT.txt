@@ -1,0 +1,65 @@
+QA OpenKit (Windows + WSL)
+
+Objetivo: validar instalacion y primer uso de OpenCode en WSL trabajando sobre carpeta de Windows (sin copiar archivos).
+
+Antes de empezar
+- Windows 11 o Windows 10 actualizado, con Internet estable
+- Cuenta con permisos de administrador (solo para instalar WSL si hace falta)
+- Una carpeta de prueba en Windows con 2-3 archivos (por ejemplo en Desktop o Documents)
+- Si usas OneDrive, mejor prueba primero con una carpeta local simple (C:\Users\<usuario>\Desktop\demo)
+
+Ejecucion recomendada del script
+- Opcion A (GUI): clic derecho en `OpenCode Installer.ps1` > Run with PowerShell
+- Opcion B (Terminal):
+  1) Abre PowerShell en `OpenKit_WSL/`
+  2) Ejecuta: `powershell -ExecutionPolicy Bypass -File ".\OpenCode Installer.ps1"`
+
+Checklist smoke test (flujo completo)
+1) Descarga el ZIP del repo y descomprime en Windows
+2) Entra a `OpenKit_WSL/`
+3) Ejecuta `OpenCode Installer.ps1`
+4) Si WSL no estaba instalado:
+   - Acepta instalacion de WSL2 + Ubuntu
+   - Si pide reinicio, reinicia
+   - Abre Ubuntu una vez y crea usuario Linux
+   - Vuelve a ejecutar el installer
+5) En el installer:
+   - Verifica deteccion de distro (normalmente Ubuntu)
+   - Acepta instalacion de OpenCode en WSL si se solicita
+   - Elige idioma (1 Espanol por defecto)
+   - Si no hay credenciales, decide si hacer login ahora (`opencode auth login`)
+   - Verifica que configure modelo default `opencode/minimax-m2.5`
+6) Confirma que el launcher se copia al Escritorio de Windows:
+   - `OpenCode Launcher.ps1`
+7) Ejecuta `OpenCode Launcher.ps1` desde Escritorio
+8) Selecciona una carpeta de Windows (Desktop/Documents/proyecto)
+9) Verifica que el launcher muestre:
+   - Carpeta Windows: `C:\...`
+   - Carpeta WSL: `/mnt/c/...`
+10) Verifica que OpenCode inicia en esa carpeta
+11) En OpenCode, ejecuta `/init` y confirma que responde
+12) Crea un archivo de prueba desde OpenCode y valida que aparece en la carpeta de Windows
+13) Cierra OpenCode y valida mensaje final del launcher
+
+Exito esperado
+- Installer termina sin errores bloqueantes
+- OpenCode instalado y usable dentro de WSL
+- Launcher abre proyectos de Windows sin import/export
+- Cambios de archivos se ven al instante tanto en OpenCode como en Explorador
+
+Si falla
+- Anota mensaje exacto y paso donde ocurre
+- Guarda captura de pantalla
+- Reintenta con PowerShell como Administrador si fallo en instalacion de WSL
+
+Problemas comunes y solucion rapida
+- `running scripts is disabled`:
+  - Ejecuta: `powershell -ExecutionPolicy Bypass -File ".\OpenCode Installer.ps1"`
+- `Ubuntu aun no esta inicializado`:
+  - Abre Ubuntu, crea usuario Linux, cierra y reintenta installer
+- `OpenCode no esta instalado en WSL`:
+  - Reejecuta `OpenCode Installer.ps1`
+- `No se pudo convertir la ruta a formato WSL`:
+  - Elige una carpeta local en disco C: (no ruta de red)
+- `No tienes permisos para acceder a la carpeta`:
+  - Prueba con una carpeta dentro de tu perfil de usuario
